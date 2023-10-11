@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="" />
+    <title>Side bar responsive </title>
+    <link rel="stylesheet" href="static/css/dashboard.css">
+    <link rel="stylesheet" href="static/css/ingredients.css">
+    <link rel="stylesheet" href="static/css/calendar.css">
+
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="logo-details">
+        <i class="bx bxl-c-plus-plus icon"></i>
+        <div class="logo_name">MealPrice </div>
+        <i class="bx bx-menu" id="btn"></i>
+      </div>
+      <ul class="nav-list">
+        <li>
+          <i class="bx bx-search"></i>
+          <input type="text" placeholder="Search..." />
+          <span class="tooltip">Search</span>
+        </li>
+        <li>
+          <a href="#">
+            <i class="bx bx-grid-alt"></i>
+            <span class="links_name">Home</span>
+          </a>
+          <span class="tooltip">DashboardH</span>
+        </li>
+        <li>
+          <a href="#">
+            <i class="bx bx-user"></i>
+            <span class="links_name">User</span>
+          </a>
+          <span class="tooltip">User</span>
+        </li>
+        <li>
+          <a href="/stocks">
+            <i class="bx bx-chat"></i>
+            <span class="links_name">Stocks</span>
+          </a>
+          <span class="tooltip">Stocks</span>
+        </li>
+        <li>
+          <a href="#">
+            <i class="bx bx-pie-chart-alt-2"></i>
+            <span class="links_name">Analytics</span>
+          </a>
+          <span class="tooltip">Analytics</span>
+        </li>
+        <li>
+          <a href="/calculator.html" id="calculator-link">
+            <i class="bx bx-folder"></i>
+            <span class="links_name">Recettes </span>
+          </a>
+          <span class="tooltip">Creez vos recettes</span>
+        </li>
+        <li>
+            <a href="/ingredients.html" id="ingredients-link">
+            <i class="bx bx-cart-alt"></i>
+            <span class="links_name">Ingredients</span></a>
+            <span class="tooltip">Ingredients</span>
+          </li>
+        <li>
+          <a href="/calendar.html" id="calendar-link">
+            <i class="bx bx-heart"></i>
+            <span class="links_name">Calendar</span>
+          </a>
+          <span class="tooltip">Planifiez vos menus</span>
+        </li>
+        <li>
+          <a href="#">
+            <i class="bx bx-cog"></i>
+            <span class="links_name">Setting</span>
+          </a>
+          <span class="tooltip">Setting</span>
+        </li>
+      </ul>
+    </div>
+    <section class="home-section">
+      <div class="text">Meal Price,</div>
+      <div id="content-container">
+        </div>
+        <!-- Contenu de la page du calendrier -->
+<div id="calendar-content" style="display: none;">
+    <!-- Insérez le contenu du calendrier ici -->
+    <!-- Vous pouvez utiliser des onglets ou des éléments de navigation pour afficher le contenu -->
+</div>
+    </section>
+
+    <script>
+      let sidebar = document.querySelector(".sidebar");
+      let closeBtn = document.querySelector("#btn");
+      let searchBtn = document.querySelector(".bx-search");
+
+      closeBtn.addEventListener("click", ()=>{
+        sidebar.classList.toggle("open");
+        menuBtnChange();
+      });
+
+      searchBtn.addEventListener("click", ()=>{
+        sidebar.classList.toggle("open");
+        menuBtnChange();
+      });
+
+      function menuBtnChange() {
+        if(sidebar.classList.contains("open")){
+          closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+        } else {
+          closeBtn.classList.replace("bx-menu-alt-right","bx-menu");
+        }
+      }
+
+      $(document).ready(function() {
+        $("#ingredients-link").click(function(e) { // Utilisation de l'ID pour cibler le lien "Ingredients"
+          e.preventDefault()
+          sidebar.classList.add("open");;
+
+          $.get("/ingredients", function(data) {
+            $("#content-container").html(data);
+          }).fail(function() {
+            console.log("Erreur lors du chargement de la page Ingredients.");
+          });
+        });
+        $(document).ready(function() {
+        $("#calculator-link").click(function(e) { // Utilisation de l'ID pour cibler le lien "Ingredients"
+          e.preventDefault()
+          sidebar.classList.add("open");
+
+          $.get("/calculator", function(data) {
+            $("#content-container").html(data);
+          }).fail(function() {
+            console.log("Erreur lors du chargement de la page Ingredients.");
+          });
+        });
+      });
+      });
+    </script>
+      <script src="/ingredients.js"></script>
+
+  </body>
+</html>

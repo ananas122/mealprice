@@ -1,0 +1,4 @@
+-- Active: 1693820168488@@127.0.0.1@27017
+CREATE USER 'sam'@'localhost' IDENTIFIED BY 'coco';
+GRANT ALL PRIVILEGES ON *.* TO 'sam'@'localhost';
+FLUSH PRIVILEGES;

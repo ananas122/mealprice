@@ -1,0 +1,783 @@
+
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>organisation des menus </h2>
+    <div class="whitearea hidden-print">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="hero">
+                    <h1>Recipe Calculator</h1>
+                    <p>Use our recipe calculator to help you devise the right quantity, ingredients and costs.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="middle">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <section id="" class="">
+                    <div class="container">
+                        <form data-calculator class="recipe-calculator-desktop" id="recipe-calculator-desktop">
+                            <table data-calculator-table>
+                                <thead data-calculator-head>
+                                    <tr>
+                                        <th colspan="3">
+                                            <h1>Recipe</h1>
+                                        </th>
+                                        <th colspan="3">
+                                            <h1>Method</h1>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody data-calculator-body>
+                                    <tr>
+                                        <td colspan="3" class="col-50">
+                                            <label for="f_name">
+                                                <strong>Recipe Name</strong>
+                                            </label>
+                                            <input type="text" id="f_name" name="f_name" value="" data-name>
+                                        </td>
+                                        <td colspan="3" rowspan="2" class="col-50">
+                                            <label for="method">
+                                                <strong>Add your method</strong>
+                                            </label>
+                                            <textarea id="method" name="method" data-method></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="col-50">
+                                            <label for="f_servings">
+                                                <strong>Number of Servings</strong>
+                                            </label>
+                                            <input type="number" name="f_servings" min="1" value="1" data-servings>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+                                            <h1>Ingredients</h1>
+                                        </td>
+                                    </tr>
+                                    <tr class="ingredient-heading">
+                                        <td colspan="2" class="col-33">Ingredients Name</td>
+                                        <td class="col-16">Qty Purchased</td>
+                                        <td class="col-16">Cost of Goods</td>
+                                        <td class="col-16">Qty used in Recipe</td>
+                                        <td class="col-16">Total Cost</td>
+                                    </tr>
+                                    <tr id="row_1" class="ingred-row">
+                                        <td colspan="2">
+                                            <input type="text" name="f_ingredients_1">
+                                        </td>
+                                        <td>
+                                            <input type="number" step="any" name="f_quantity_1" placeholder="g / mL / each" min="0" data-row-qty>
+                                        </td>
+                                        <td>
+                                            <input type="number" step="any" name="f_cost_1" placeholder="$" min="0" data-row-cost>
+                                        </td>
+                                        <td>
+                                            <input type="number" step="any" name="f_used_1" placeholder="g / mL / each" min="0" data-row-used>
+                                        </td>
+                                        <td class="total-cost">
+                                            <input type="text" name="f_total_1" placeholder="$0.00" readonly data-cost>
+                                        </td>
+                                    </tr>
+                                    <tr id="row_2" class="ingred-row">
+                                        <td colspan="2">
+                                            <input type="text" name="f_ingredients_2">
+                                        </td>
+                                        <td>
+                                            <input type="number" step="any" name="f_quantity_2" placeholder="g / mL / each" min="0" data-row-qty>
+                                        </td>
+                                        <td>
+                                            <input type="number" step="any" name="f_cost_2" placeholder="$" min="0" data-row-cost>
+                                        </td>
+                                        <td>
+                                            <input type="number" step="any" name="f_used_2" placeholder="g / mL / each" min="0" data-row-used>
+                                        </td>
+                                        <td class="total-cost">
+                                            <input type="text" name="f_total_2" placeholder="$0.00" readonly data-cost>
+                                        </td>
+                                    </tr>
+                                    <tr id="row_3" class="ingred-row">
+                                        <td colspan="2">
+                                            <input type="text" name="f_ingredients_3">
+                                        </td>
+                                        <td>
+                                            <input type="number" step="any" name="f_quantity_3" placeholder="g / mL / each" min="0" data-row-qty>
+                                        </td>
+                                        <td>
+                                            <input type="number" step="any" name="f_cost_3" placeholder="$" min="0" data-row-cost>
+                                        </td>
+                                        <td>
+                                            <input type="number" step="any" name="f_used_3" placeholder="g / mL / each" min="0" data-row-used>
+                                        </td>
+                                        <td class="total-cost">
+                                            <input type="text" name="f_total_3" placeholder="$0.00" readonly data-cost>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+                                            <h5>
+                                                <a data-add>+ Add Extra Ingredient</a>
+                                            </h5>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="6">
+                                            <hr/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">&nbsp;</td>
+                                        <td colspan="2" class="footer-label"> Total Batch Cost</td>
+                                        <td>
+                                            <input type="text" placeholder="$0.00" name="batch_cost" readonly data-tbc>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">&nbsp;</td>
+                                        <td colspan="2" class="footer-label"> With GST</td>
+                                        <td>
+                                            <input type="text" placeholder="$0.00" name="cost_gst" readonly data-gst>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+                                            <hr/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">&nbsp;</td>
+                                        <td colspan="2" class="footer-label"> Total Per Serve</td>
+                                        <td>
+                                            <input type="text" placeholder="$0.00" name="total_per_serve" readonly data-tps>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">&nbsp;</td>
+                                        <td colspan="2" class="footer-label"> Selling Price per serve</td>
+                                        <td class="total-cost">
+                                            <input type="text" name="price" placeholder="$0.00" value="0.00" data-spp>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+                                            <hr/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">&nbsp;</td>
+                                        <td colspan="2" class="footer-label"> Food Gross Profit %</td>
+                                        <td>
+                                            <input type="text" placeholder="$0.00" readonly name="gross_profit" data-fgp>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">&nbsp;</td>
+                                        <td colspan="2" class="footer-label"> Food Mark up %</td>
+                                        <td>
+                                            <input type="text" placeholder="$0.00" readonly name="mark_up" data-fmu>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+                                            <hr/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">&nbsp;</td>
+                                        <td colspan="2">
+                                            <button class="button calculate" type="button" data-calc>Calculate</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+                                            <hr/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">&nbsp;</td>
+                                        <td colspan="2" class="footer-label"> Total Generated Profit</td>
+                                        <td>
+                                            <input type="text" placeholder="$0.00" readonly name="generated_profit" data-tgp>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">&nbsp;</td>
+                                        <td colspan="2">
+                                            <button class="button" type="button" data-pdf>Download as PDF</button>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <script src="" id="template"><tr id="row_*" class="ingred-row">
+                                                <td colspan="2">
+                                                    <input type="text" name="f_ingredients_*">
+                                                </td>
+                                                <td>
+                                                    <input type="number" step="any" name="f_quantity_*" placeholder="g / mL / each" min="0" data-row-qty>
+                                                </td>
+                                                <td>
+                                                    <input type="number" step="any" name="f_cost_*" placeholder="$" min="0" data-row-cost>
+                                                </td>
+                                                <td>
+                                                    <input type="number" step="any" name="f_used_*" placeholder="g / mL / each" min="0" data-row-used>
+                                                </td>
+                                                <td class="total-cost">
+                                                    <input type="text" name="f_total_*" placeholder="$0.00" readonly data-cost>
+                                                </td>
+                                            </tr></script>
+                        </form>
+                        <form data-calculator class="recipe-calculator-mobile">
+                            <table data-calculator-table>
+                                <tbody data-calculator-body>
+                                    <tr>
+                                        <td colspan="3">
+                                            <h1>Recipe</h1>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <label for="f_name">
+                                                <strong>Recipe Name</strong>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <input type="text" id="f_name" name="f_name" value="" data-name>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <label for="f_servings">
+                                                <strong>Number of Servings</strong>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <input type="number" name="f_servings" min="1" value="1" data-servings>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <h1>Method</h1>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" valign="bottom">
+                                            <label for="method">
+                                                <strong>Add your method</strong>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" valign="bottom">
+                                            <textarea id="method" name="method" data-method></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <h1>Ingredients</h1>
+                                        </td>
+                                    </tr>
+                                    <tr id="row_1" class="ingred-row row_1">
+                                        <td colspan="3">
+                                            <label for="f_ingredients_1">
+                                                <strong>Ingredients Name</strong>
+                                            </label>
+                                    </tr>
+                                    <tr class="ingred-row">
+                                        <td colspan="3">
+                                            <input type="text" name="f_ingredients_1" data-id="1">
+                                        </td>
+                                    </tr>
+                                    <tr class="ingred-row">
+                                        <td colspan="2">
+                                            <label for="f_quantity_1">
+                                                <strong>Qty Purchased</strong>
+                                            </label>
+                                        </td>
+                                        <td colspan="1">
+                                            <label for="f_cost_1">
+                                                <strong>Cost of Goods</strong>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr class="ingred-row row_1">
+                                        <td colspan="2">
+                                            <input type="number" step="any" name="f_quantity_1" placeholder="g / mL / each" min="0" data-id="1" data-row-qty>
+                                        </td>
+                                        <td colspan="1">
+                                            <input type="number" step="any" name="f_cost_1" placeholder="$" min="0" data-id="1" data-row-cost>
+                                        </td>
+                                    </tr>
+                                    <tr class="ingred-row">
+                                        <td colspan="2">
+                                            <label for="f_used_1">
+                                                <strong>Qty used in recipe</strong>
+                                            </label>
+                                        </td>
+                                        <td class="total-cost" colspan="1">
+                                            <label for="f_used_1">
+                                                <strong>Total Cost</strong>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr class="ingred-row row_1">
+                                        <td colspan="2">
+                                            <input type="number" step="any" name="f_used_1" placeholder="g / mL / each" min="0" data-id="1" data-row-used>
+                                        </td>
+                                        <td class="total-cost" colspan="1">
+                                            <input type="text" name="f_total_1" placeholder="$0.00" data-id="1" readonly data-cost>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <hr/>
+                                        </td>
+                                    </tr>
+                                    <tr id="row_2" class="ingred-row">
+                                        <td colspan="3">
+                                            <label for="f_ingredients_2">
+                                                <strong>Ingredients Name</strong>
+                                            </label>
+                                    </tr>
+                                    <tr class="ingred-row row_2">
+                                        <td colspan="3">
+                                            <input type="text" name="f_ingredients_2" data-id="2">
+                                        </td>
+                                    </tr>
+                                    <tr class="ingred-row">
+                                        <td colspan="2">
+                                            <label for="f_quantity_2">
+                                                <strong>Qty Purchased</strong>
+                                            </label>
+                                        </td>
+                                        <td colspan="1">
+                                            <label for="f_cost_2">
+                                                <strong>Cost of Goods</strong>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr class="ingred-row row_2">
+                                        <td colspan="2">
+                                            <input type="number" step="any" name="f_quantity_2" placeholder="g / mL / each" min="0" data-id="2" data-row-qty>
+                                        </td>
+                                        <td colspan="1">
+                                            <input type="number" step="any" name="f_cost_2" placeholder="$" min="0" data-id="2" data-row-cost>
+                                        </td>
+                                    </tr>
+                                    <tr class="ingred-row">
+                                        <td colspan="2">
+                                            <label for="f_used_2">
+                                                <strong>Qty used in recipe</strong>
+                                            </label>
+                                        </td>
+                                        <td class="total-cost" colspan="1">
+                                            <label for="f_used_2">
+                                                <strong>Total Cost</strong>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr class="ingred-row row_2">
+                                        <td colspan="2">
+                                            <input type="number" step="any" name="f_used_2" placeholder="g / mL / each" min="0" data-id="2" data-row-used>
+                                        </td>
+                                        <td class="total-cost" colspan="1">
+                                            <input type="text" name="f_total_2" placeholder="$0.00" data-id="2" readonly data-cost>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <hr/>
+                                        </td>
+                                    </tr>
+                                    <tr id="row_3" class="ingred-row">
+                                        <td colspan="3">
+                                            <label for="f_ingredients_3">
+                                                <strong>Ingredients Name</strong>
+                                            </label>
+                                    </tr>
+                                    <tr class="ingred-row row_3">
+                                        <td colspan="3">
+                                            <input type="text" name="f_ingredients_3" data-id="3">
+                                        </td>
+                                    </tr>
+                                    <tr class="ingred-row">
+                                        <td colspan="2">
+                                            <label for="f_quantity_3">
+                                                <strong>Qty Purchased</strong>
+                                            </label>
+                                        </td>
+                                        <td colspan="1">
+                                            <label for="f_cost_3">
+                                                <strong>Cost of Goods</strong>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr class="ingred-row row_3">
+                                        <td colspan="2">
+                                            <input type="number" step="any" name="f_quantity_3" placeholder="g / mL / each" min="0" data-id="3" data-row-qty>
+                                        </td>
+                                        <td colspan="1">
+                                            <input type="number" step="any" name="f_cost_3" placeholder="$" min="0" data-id="3" data-row-cost>
+                                        </td>
+                                    </tr>
+                                    <tr class="ingred-row">
+                                        <td colspan="2">
+                                            <label for="f_used_3">
+                                                <strong>Qty used in recipe</strong>
+                                            </label>
+                                        </td>
+                                        <td class="total-cost" colspan="1">
+                                            <label for="f_used_3">
+                                                <strong>Total Cost</strong>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr class="ingred-row row_3">
+                                        <td colspan="2">
+                                            <input type="number" step="any" name="f_used_3" placeholder="g / mL / each" min="0" data-id="3" data-row-used>
+                                        </td>
+                                        <td class="total-cost" colspan="1">
+                                            <input type="text" name="f_total_3" placeholder="$0.00" data-id="3" readonly data-cost>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <hr/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <h5>
+                                                <a data-add>+ Add Extra Ingredient</a>
+                                            </h5>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Total Batch Cost</strong>
+                                        </td>
+                                        <td colspan="1">
+                                            <input type="text" placeholder="$0.00" readonly data-tbc>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>With GST</strong>
+                                        </td>
+                                        <td colspan="1">
+                                            <input type="text" placeholder="$0.00" readonly data-gst>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <hr/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Total Per Serve</strong>
+                                        </td>
+                                        <td colspan="1">
+                                            <input type="text" placeholder="$0.00" readonly data-tps>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Selling Price per serve</strong>
+                                        </td>
+                                        <td class="total-cost" colspan="1">
+                                            <input type="text" name="price" placeholder="$0.00" value="0.00" data-spp>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <hr/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Food Gross Profit %</strong>
+                                        </td>
+                                        <td colspan="1">
+                                            <input type="text" placeholder="$0.00" readonly data-fgp>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Food Mark up %</strong>
+                                        </td>
+                                        <td colspan="1">
+                                            <input type="text" placeholder="$0.00" readonly data-fmu>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <hr/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <button class="button calculate" type="button" data-calc>Calculate</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <hr/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Total Generated Profit</strong>
+                                        </td>
+                                        <td colspan="1">
+                                            <input type="text" placeholder="$0.00" readonly data-tgp>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <script src="" id="template"><tr id="row_*" class="ingred-row">
+                                                <tr colspan="3">
+                                                    <label for="f_ingredients_*"><strong>Ingredients Name</strong></label>
+                                            </tr>
+
+                                            <tr class="ingred-row row_*">
+                                                <td colspan="3">
+                                                    <input type="text" name="f_ingredients_*" data-id="*">
+                                                </td>
+                                            </tr>
+
+                                            <tr class="ingred-row">
+                                                <td colspan="2">
+                                                    <label for="f_quantity_*"><strong>Qty Purchased</strong></label>
+                                                </td>
+
+                                                <td colspan="1">
+                                                    <label for="f_cost_*"><strong>Cost of Goods</strong></label>
+                                                </td>
+                                            </tr>
+
+                                            <tr class="ingred-row row_*">
+                                                <td colspan="2">
+                                                    <input type="number" step="any" name="f_quantity_*" placeholder="g / mL / each" min="0" data-id="*" data-row-qty>
+                                                </td>
+
+                                                <td colspan="1">
+                                                    <input type="number" step="any" name="f_cost_*" placeholder="$" min="0" data-id="*" data-row-cost>
+                                                </td>
+                                            </tr>
+
+                                            <tr class="ingred-row">
+                                                <td colspan="2">
+                                                    <label for="f_used_*"><strong>Qty used in recipe</strong></label>
+                                                </td>
+
+                                                <td class="total-cost"  colspan="1">
+                                                    <label for="f_used_*"><strong>Total Cost</strong></label>
+                                                </td>
+                                            </tr>
+
+                                            <tr class="ingred-row row_*">
+                                                <td colspan="2">
+                                                    <input type="number" step="any" name="f_used_*" placeholder="g / mL / each"  min="0" data-id="*" data-row-used>
+                                                </td>
+
+                                                <td class="total-cost"  colspan="1">
+                                                    <input type="text" name="f_total_*" placeholder="$0.00" data-id="*" readonly data-cost>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td colspan="3">
+                                                    <hr />
+                                                </td>
+                                            </tr></script>
+                                            
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="be-ix-link-block"></div>
+<div class="bottom hidden-print">
+<div class="subscribearea parallax parallax-1 hidden-print">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="newsletterform wigetizedarea">
+                    <div id="text-2" class="widget widget_text">
+                        <div class="hide">Start Getting Fed with Ideas</div>
+                        <div class="entry">
+                            <div class="textwidget">
+                                <p>
+                                    Be inspired with Recipes created by Chefs.
+                                    <br/>
+                                    <b>Sign up for updates about products, special offers, news and promotional materials from Goodman Fielder.</b>
+                                </p>
+                                <div id='hsfe_6512a2254180f'>
+                                    <div class='sk-spinner sk-spinner-double-bounce'>
+                                        <div class='sk-double-bounce1'></div>
+                                        <div class='sk-double-bounce2'></div>
+                                    </div>
+                                </div>
+                                <!--[if lte IE 8]> <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2-legacy.js"></script> <![endif]-->
+                                <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
+                                <script>
+                                hbspt.forms.create({
+                                    portalId: '1803753',
+                                    formId: 'd5219f6c-b219-4b18-80f7-0760dc763bcd',
+                                    css: '',
+                                    locale: 'en',
+                                    groupErrors: true,
+                                    inlineMessage: '<h4>Your subscription was successful. Thanks.</h4>',
+                                    target: '#hsfe_6512a2254180f',
+                                    cssClass: 'hubspot_form',
+                                    onBeforeFormInit: function() {
+                                        $("#hsfe_6512a2254180f").html("<div class='sk-spinner sk-spinner-double-bounce'><div class='sk-double-bounce1'></div><div class='sk-double-bounce2'></div></div>");
+                                    },
+                                    onFormReady: function() {
+                                        $('.hubspot_form .field select').select2({
+                                            minimumResultsForSearch: Infinity,
+                                            width: '100%'
+                                        });
+                                    },
+                                });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="left">
+                    <a href="https://www.gffoodservice.com.au/contact-us/">Contact Us</a>
+                     | 
+                    <a href="https://www.gffoodservice.com.au/conditions-of-use-privacy/">Conditions of Use &amp; Privacy</a>
+                     | 
+                    <a href="https://www.gffoodservice.com.au/site-map/">Site Map</a>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="right">
+                    <div class="footer-right-content"> Copyright &copy; Goodman Fielder</div>
+                    <div class="socialicons">
+                        <a href="https://instagram.com/gffoodserviceau/" target="_blank" id="header_social_instagram" class="smooth">
+                            <span class="icon-icon_instagram"></span>
+                        </a>
+                        <a href="https://www.facebook.com/gffoodserviceau" target="_blank" id="header_social_facebook" class="smooth">
+                            <span class="icon-icon_facebook"></span>
+                        </a>
+                        <a href="http://youtube.com/c/gffoodserviceau" target="_blank" id="header_social_youtube" class="smooth">
+                            <span class="icon-icon_youtube"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="mobile mobile_menu static">
+<div id="dnnMenu" class="menu-navbar-container">
+<ul class="menu">
+    <li class="searchbox">
+        <form action="https://www.gffoodservice.com.au" method="get">
+            <input class="inputbox" name="s" placeholder="Search" type="text"/>
+        </form>
+    </li>
+    <li id="menu-item-59" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-59">
+        <a href="https://www.gffoodservice.com.au/">Home</a>
+    </li>
+    <li id="menu-item-112" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-112">
+        <a href="https://www.gffoodservice.com.au/products/">Products</a>
+    </li>
+    <li id="menu-item-154" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-154">
+        <a href="https://www.gffoodservice.com.au/ideas/">Ideas</a>
+    </li>
+    <li id="menu-item-58" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-58">
+        <a href="https://www.gffoodservice.com.au/find-a-distributor/">Distributors</a>
+    </li>
+    <li id="menu-item-52133" class="menu-item menu-item-type-post_type menu-item-object-specialty menu-item-52133">
+        <a href="https://www.gffoodservice.com.au/specialty/bakers/">Bakers</a>
+    </li>
+    <li id="menu-item-57" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-57">
+        <a href="https://www.gffoodservice.com.au/about/">About</a>
+    </li>
+    <li id="menu-item-56" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-56">
+        <a href="https://www.gffoodservice.com.au/contact-us/">Contact Us</a>
+    </li>
+    <li class="menu-item">
+        <div class="menusocial">
+            <a href="https://instagram.com/gffoodserviceau/" target="_blank" class="sociallink">
+                <span class="icon-icon_instagram"></span>
+            </a>
+            <a href="https://www.facebook.com/gffoodserviceau" target="_blank" class="sociallink">
+                <span class="icon-icon_facebook"></span>
+            </a>
+            <a href="http://youtube.com/c/gffoodserviceau" target="_blank" class="sociallink">
+                <span class="icon-icon_youtube"></span>
+            </a>
+        </div>
+    </li>
+</ul>
+</div>
+</div>
+<input type="hidden" id="templatepath" name="templatepath" value="https://www.gffoodservice.com.au/content/themes/gffs-2021">
+<input type="hidden" id="siteurl" name="siteurl" value="https://www.gffoodservice.com.au">
+<input type="hidden" id="data_pcode" name="data_pcode" value="">
+<input type="hidden" id="data_state" name="data_state" value="">
+<input type="hidden" id="data_lat" name="data_lat" value="">
+<input type="hidden" id="data_lng" name="data_lng" value="">
+<script type="text/javascript">
+(function(d, w) {
+w._hsq = w._hsq || [];
+w._hsq.push(["setContentType", "standard-page"]);
+})(document, window);
+</script>
+<script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/1803753.js"></script>
+<script type='text/javascript' src='https://www.gffoodservice.com.au/content/plugins/contact-form-7/includes/swv/js/index.js?ver=5.7.3' id='swv-js'></script>
+<script type='text/javascript' id='contact-form-7-js-extra'>
+var wpcf7 = {
+"api": {
+"root": "https:\/\/www.gffoodservice.com.au\/wp-json\/",
+"namespace": "contact-form-7\/v1"
+},
+"cached": "1"
+};
+</script>
+<script type='text/javascript' src='https://www.gffoodservice.com.au/content/plugins/contact-form-7/includes/js/index.js?ver=5.7.3' id='contact-form-7-js'></script>
+<script type='text/javascript' src='https://www.gffoodservice.com.au/content/themes/gffs-2021/js/scripts.js?ver=1675974310' id='corejs-js'></script>
+<script type='text/javascript' id='recipecalculatorjs-js-extra'>
+var recipecalculator_ajax = {
+"ajax_url": "https:\/\/www.gffoodservice.com.au\/wp\/wp-admin\/admin-ajax.php"
+};
+</script>
+<script type='text/javascript' src='https://www.gffoodservice.com.au/content/themes/gffs-2021/js/recipe.calculator.js?ver=1643623622' id='recipecalculatorjs-js'></script>
+<script type="text/javascript" id="wpsp-script-frontend"></script>
+
+</body>
+</html>
+

@@ -1,0 +1,36 @@
+{
+    "cSpell.words": [
+        "fichier"
+    ],
+    "cSpell.language": "en,fr",
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "mealprice",
+            "database": "mp_db",
+            "username": "sam",
+            "askForPassword": true
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "database": "mp_db",
+            "username": "sam",
+            "name": "portfolio"
+        }
+    ],
+    "python.pythonPath": "myenv/bin/python3"
+}
