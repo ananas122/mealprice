@@ -6,8 +6,9 @@
   <!-- Inclure les liens vers les fichiers CSS de la barre latérale et des ingrédients -->
   <link rel="stylesheet" href="static/css/dashboard.css">
   <link rel="stylesheet" href="static/css/ingredients.css">
+  
   <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <body>
   <h2>Ingrédients</h2>
@@ -54,141 +55,92 @@
       </tr>
     </thead>
     <tbody>
-      <!-- Vous pouvez ajouter des lignes d'ingrédients ici au besoin -->
     </tbody>
   </table>
+  <div id="contenuImporte"></div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+  $(document).ready(function(){
+    // Charger le contenu de dashboard.html
+    $("#contenuImporte").load("dashboard.html", function() {
+      console.log("Dashboard chargé");
 
-document.addEventListener("DOMContentLoaded", function() {
-  console.log("Document chargé"); // Ajout d'un console.log
+      // Le reste de votre code commence ici
+      let editingRow = null;
+      const ingredientTable = $("#ingredientTable tbody");
+      const categoryFilter = $("#category");
+      const sortSelect = $("#sort");
+      const sortButton = $("#sortButton");
+      const sortOrderSelect = $("#sortOrder");
 
-  let editingRow = null;
-  const ingredientTable = document.getElementById("ingredientTable").getElementsByTagName('tbody')[0];
-  const categoryFilter = document.getElementById("category");
-  const sortSelect = document.getElementById("sort");
-  const sortButton = document.getElementById("sortButton");
-  const sortOrderSelect = document.getElementById("sortOrder");
+      // Fonction pour ajouter une nouvelle ligne d'ingrédient
+      function addIngredientRow() {
+        const newRow = $("<tr>").html(`
+          <td><i class="fas fa-edit editIcon"></i> <i class="fas fa-trash-alt deleteIcon"></i></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        `);
+        ingredientTable.append(newRow);
+        return newRow;
+      }
 
-  // Fonction pour ajouter une nouvelle ligne d'ingrédient
-  function addIngredientRow() {
-    console.log("Ajout d'une nouvelle ligne"); // Ajout d'un console.log
+      // Fonction pour mettre à jour une ligne d'ingrédient
+      function updateRow(row) {
+        const name = $("#name").val();
+        const category = $("#category").val();
+        const supplier = $("#supplier").val();
+        const unit_cost = parseFloat($("#unit_cost").val());
+        const stock_quantity = parseInt($("#stock_quantity").val());
 
-    const newRow = ingredientTable.insertRow();
-    newRow.innerHTML = `
-      <td><i class="fas fa-edit editIcon"></i> <i class="fas fa-trash-alt deleteIcon"></i></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    `;
-    return newRow;
-  }
+        row.find('td').eq(1).text(name);
+        row.find('td').eq(2).text(category);
+        row.find('td').eq(3).text(supplier);
+        row.find('td').eq(4).text(unit_cost);
+        row.find('td').eq(5).text(stock_quantity);
+      }
 
-  // Fonction pour mettre à jour une ligne d'ingrédient avec les données fournies
-  function updateRow(row) {
-    const name = document.getElementById("name").value;
-    const category = document.getElementById("category").value;
-    const supplier = document.getElementById("supplier").value;
-    const unit_cost = parseFloat(document.getElementById("unit_cost").value);
-    const stock_quantity = parseInt(document.getElementById("stock_quantity").value);
-
-    row.cells[1].textContent = name;
-    row.cells[2].textContent = category;
-    row.cells[3].textContent = supplier;
-    row.cells[4].textContent = unit_cost;
-    row.cells[5].textContent = stock_quantity;
-  }
-
-  // Gestionnaire d'événement pour le bouton "Ajouter"
-  document.getElementById("addIngredient").addEventListener("click", function() {
-      console.log("Bouton Ajouter cliqué"); // Ajout d'un console.log
-
-    // Récupérez les valeurs des champs de saisie
-    const name = document.getElementById("name").value;
-    const category = document.getElementById("category").value;
-    const supplier = document.getElementById("supplier").value;
-    const unit_cost = parseFloat(document.getElementById("unit_cost").value);
-    const stock_quantity = parseInt(document.getElementById("stock_quantity").value);
-    const newRow = addIngredientRow();
-    
-    // Mettez à jour la ligne existante
-    updateRow(newRow);
-
-    // Définissez les valeurs des cellules de la nouvelle ligne
-    newRow.cells[1].textContent = name;
-    newRow.cells[2].textContent = category;
-    newRow.cells[3].textContent = supplier;
-    newRow.cells[4].textContent = unit_cost;
-    newRow.cells[5].textContent = stock_quantity;
-  });
-
-  // Gestionnaire d'événement pour le bouton "Trier"
-  sortButton.addEventListener("click", function() {
-    const sortField = sortSelect.value;
-    const sortOrder = sortOrderSelect.value;
-    const rows = Array.from(ingredientTable.rows).slice(1); // Ignorer la première ligne d'en-tête
-    rows.sort((a, b) => {
-      const cellA = a.cells[sortField === "name" ? 1 : 2].textContent.toLowerCase();
-      const cellB = b.cells[sortField === "name" ? 1 : 2].textContent.toLowerCase();
-      return sortOrder === "asc" ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
-    });
-    while (ingredientTable.rows.length > 1) {
-      ingredientTable.deleteRow(1);
-    }
-    rows.forEach(row => ingredientTable.appendChild(row));
-  });
-
-  // Gestionnaire d'événement pour la sélection de catégorie
-  categoryFilter.addEventListener("change", function() {
-    const selectedCategory = categoryFilter.value;
-    const rows = Array.from(ingredientTable.rows).slice(1);
-    rows.forEach(row => {
-      const category = row.cells[2].textContent;
-      row.style.display = selectedCategory === "" || category === selectedCategory ? "" : "none";
-    });
-  });
-
-  // Gestionnaire d'événement pour le bouton "Modifier"
-  document.getElementById("updateIngredient").addEventListener("click", function() {
-    if (editingRow) {
-      updateRow(editingRow);
-      editingRow = null;
-      alert("Ligne mise à jour avec succès !");
-    } else {
-      alert("Veuillez sélectionner une ligne à modifier en cliquant sur l'icône de modification.");
-    }
-  });
-
-  // Gestionnaire d'événement pour les icônes d'édition et de suppression
-  ingredientTable.addEventListener("click", function(event) {
-    const target = event.target;
-    if (target.classList.contains("editIcon")) {
-      editingRow = target.closest("tr");
-      document.getElementById("name").value = editingRow.cells[1].textContent;
-      categoryFilter.value = editingRow.cells[2].textContent;
-      document.getElementById("supplier").value = editingRow.cells[3].textContent;
-      document.getElementById("unit_cost").value = editingRow.cells[4].textContent;
-      document.getElementById("stock_quantity").value = editingRow.cells[5].textContent;
-    } else if (target.classList.contains("deleteIcon")) {
-      editingRow = null;
-      target.closest("tr").remove();
-    }
-  });
-
-  $(document).ready(function() {
-    $("#ingredients-link").click(function(e) { // Utilisation de l'ID pour cibler le lien "Ingredients"
-      e.preventDefault();
-      $.get("/ingredients", function(data) {
-        $("#ingredientsContainer").html(data);
-      }).fail(function() {
-        console.log("Erreur lors du chargement de la page Ingredients.");
+      // Gestionnaire d'événement pour le bouton "Ajouter"
+      $("#addIngredient").click(function() {
+        const newRow = addIngredientRow();
+        updateRow(newRow);
       });
-    });
-  });
 
-});
+      // Gestionnaire d'événement pour le bouton "Trier"
+      sortButton.click(function() {
+        // Votre code de tri ici
+      });
+
+      // Gestionnaire d'événement pour le filtre de catégorie
+      categoryFilter.change(function() {
+        // Votre code de filtre ici
+      });
+
+      // Gestionnaire d'événement pour le bouton "Modifier"
+      $("#updateIngredient").click(function() {
+        if (editingRow) {
+          updateRow(editingRow);
+          editingRow = null;
+          alert("Ligne mise à jour avec succès !");
+        } else {
+          alert("Veuillez sélectionner une ligne à modifier en cliquant sur l'icône de modification.");
+        }
+      });
+
+      // Gestionnaire d'événement pour les icônes d'édition et de suppression
+      ingredientTable.on("click", function(event) {
+        const target = $(event.target);
+        if (target.hasClass("editIcon")) {
+          editingRow = target.closest("tr");
+          // Votre code d'édition ici
+        } else if (target.hasClass("deleteIcon")) {
+          editingRow = null;
+          target.closest("tr").remove();
+        }
+      });
+
+    }); // Fin du callback de .load()
+
+  }); // Fin de $(document).ready()
 </script>
-
-</body>
-</html>
