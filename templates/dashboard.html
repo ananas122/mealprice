@@ -3,20 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content="" />
-    <title>Side bar responsive </title>
-    <link rel="stylesheet" href="static/css/dashboard.css">
-    <link rel="stylesheet" href="static/css/ingredients.css">
-    <link rel="stylesheet" href="static/css/calendar.css">
+    <title>Side bar responsive</title>
+    <link rel="stylesheet" href="static/css/dashboard.css" />
+    <link rel="stylesheet" href="static/css/ingredients.css" />
+      <link rel="stylesheet" href="static/css/index.css" />
 
-    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
     <div class="sidebar">
       <div class="logo-details">
-        <i class="bx bxl-c-plus-plus icon"></i>
-        <div class="logo_name">MealPrice </div>
+        <i class="bx bxl-MealPrice-plus-plus icon"></i>
+        <div class="logo_name">MealPrice</div>
         <i class="bx bx-menu" id="btn"></i>
       </div>
       <ul class="nav-list">
@@ -26,11 +26,11 @@
           <span class="tooltip">Search</span>
         </li>
         <li>
-          <a href="#">
+          <a href="/index1.html" id="index1-link">
             <i class="bx bx-grid-alt"></i>
-            <span class="links_name">Home</span>
+            <span class="links_name">index1</span>
           </a>
-          <span class="tooltip">DashboardH</span>
+          <span class="tooltip">Index1</span>
         </li>
         <li>
           <a href="#">
@@ -40,32 +40,26 @@
           <span class="tooltip">User</span>
         </li>
         <li>
-          <a href="/stocks">
+          <a href="/stocks.html">
             <i class="bx bx-chat"></i>
             <span class="links_name">Stocks</span>
           </a>
           <span class="tooltip">Stocks</span>
         </li>
         <li>
-          <a href="#">
-            <i class="bx bx-pie-chart-alt-2"></i>
-            <span class="links_name">Analytics</span>
-          </a>
-          <span class="tooltip">Analytics</span>
-        </li>
-        <li>
-          <a href="/calculator.html" id="calculator-link">
+          <a href="/recettes.html" id="recettes-link">
             <i class="bx bx-folder"></i>
             <span class="links_name">Recettes </span>
           </a>
           <span class="tooltip">Creez vos recettes</span>
         </li>
         <li>
-            <a href="/ingredients.html" id="ingredients-link">
+          <a href="/ingredients.html" id="ingredients-link">
             <i class="bx bx-cart-alt"></i>
-            <span class="links_name">Ingredients</span></a>
-            <span class="tooltip">Ingredients</span>
-          </li>
+            <span class="links_name">Ingredients</span></a
+          >
+          <span class="tooltip">Ingredients</span>
+        </li>
         <li>
           <a href="/calendar.html" id="calendar-link">
             <i class="bx bx-heart"></i>
@@ -74,74 +68,78 @@
           <span class="tooltip">Planifiez vos menus</span>
         </li>
         <li>
-          <a href="#">
+          <a href="/calculator.html" id="calculator-link">
             <i class="bx bx-cog"></i>
-            <span class="links_name">Setting</span>
+            <span class="links_name">Calculator</span>
           </a>
-          <span class="tooltip">Setting</span>
+          <span class="tooltip">Calculator</span>
         </li>
       </ul>
     </div>
     <section class="home-section">
       <div class="text">Meal Price,</div>
-      <div id="content-container">
-        </div>
-        <!-- Contenu de la page du calendrier -->
-<div id="calendar-content" style="display: none;">
-    <!-- Insérez le contenu du calendrier ici -->
-    <!-- Vous pouvez utiliser des onglets ou des éléments de navigation pour afficher le contenu -->
-</div>
+      <div id="content-container"></div>
+      </div>
     </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
+    // sidebar open close
       let sidebar = document.querySelector(".sidebar");
       let closeBtn = document.querySelector("#btn");
       let searchBtn = document.querySelector(".bx-search");
 
-      closeBtn.addEventListener("click", ()=>{
+      closeBtn.addEventListener("click", () => {
         sidebar.classList.toggle("open");
         menuBtnChange();
       });
 
-      searchBtn.addEventListener("click", ()=>{
+      searchBtn.addEventListener("click", () => {
         sidebar.classList.toggle("open");
         menuBtnChange();
       });
 
       function menuBtnChange() {
-        if(sidebar.classList.contains("open")){
+        if (sidebar.classList.contains("open")) {
           closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");
         } else {
-          closeBtn.classList.replace("bx-menu-alt-right","bx-menu");
+          closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");
         }
       }
 
-      $(document).ready(function() {
-        $("#ingredients-link").click(function(e) { // Utilisation de l'ID pour cibler le lien "Ingredients"
-          e.preventDefault()
-          sidebar.classList.add("open");;
-
-          $.get("/ingredients", function(data) {
+// cliquer sur le lien
+$(document).ready(function () {
+    
+    function handleLinkClick(e, url) {
+        e.preventDefault();
+        sidebar.classList.add("open");
+        $.get(url, function(data) {
             $("#content-container").html(data);
-          }).fail(function() {
-            console.log("Erreur lors du chargement de la page Ingredients.");
-          });
+        }).fail(function() {
+            console.log("Erreur lors du chargement de la page " + url + ".");
         });
-        $(document).ready(function() {
-        $("#calculator-link").click(function(e) { // Utilisation de l'ID pour cibler le lien "Ingredients"
-          e.preventDefault()
-          sidebar.classList.add("open");
+    }
 
-          $.get("/calculator", function(data) {
-            $("#content-container").html(data);
-          }).fail(function() {
-            console.log("Erreur lors du chargement de la page Ingredients.");
-          });
-        });
-      });
-      });
-    </script>
-      <script src="/ingredients.js"></script>
+    $("#ingredients-link").click(function (e) {
+        handleLinkClick(e, "/ingredients");
+    });
 
-  </body>
+    $("#recettes-link").click(function (e) {
+        handleLinkClick(e, "/recettes");
+    });
+
+    $("#calculator-link").click(function(e) {
+        handleLinkClick(e, "/calculator");
+    });
+    
+    $("#index1-link").click(function(e) {
+        handleLinkClick(e, "/index1");
+    });
+    $("#calendar-link").click(function(e) {
+        handleLinkClick(e, "/calendar");
+    });
+    
+});
+</script>
+</body>
 </html>
