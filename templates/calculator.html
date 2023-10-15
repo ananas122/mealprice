@@ -66,69 +66,151 @@ p {
     font-weight: bold;
 }
 </style>
-<form id="formulaire">
-    <input type="text" id="nom" placeholder="Nom de l'ingrédient">
-    <input type="number" id="quantite" placeholder="Quantité (kilo/litre)">
-    <input type="number" id="prix" placeholder="Prix par kilo/litre">
-    <button type="button" onclick="ajouterIngredient()">Ajouter</button>
-  </form>
+ <form id="recipe-calculator-desktop">
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="3">Recette</th>
+                    <th colspan="3">Méthode</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="3">
+                        <label for="f_name"><strong>Nom de la recette</strong></label>
+                        <input type="text" id="f_name" name="f_name">
+                    </td>
+                    <td colspan="3" rowspan="2">
+                        <label for="method"><strong>Ajoutez votre méthode</strong></label>
+                        <textarea id="method" name="method"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label for="f_servings"><strong>Nombre de portions</strong></label>
+                        <input type="number" name="f_servings" min="1" value="1">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6"><h1>Ingrédients</h1></td>
+                </tr>
+                <tr>
+                    <td colspan="2">Nom de l'ingrédient</td>
+                    <td>Qté achetée</td>
+                    <td>Coût des marchandises</td>
+                    <td>Qté utilisée dans la recette</td>
+                    <td>Coût total</td>
+                </tr>
+                <!-- Vous pouvez dupliquer cette ligne pour chaque ingrédient -->
+                <tr id="row_1">
+                    <td colspan="2">
+                        <input type="text" name="f_ingredients_1">
+                    </td>
+                    <td>
+                        <input type="number" step="any" name="f_quantity_1" min="0">
+                        <select name="f_unit_1">
+                            <option value="g">g</option>
+                            <option value="mg">mg</option>
+                            <option value="L">L</option>
+                            <option value="mL">mL</option>
+                            <option value="unité">unité</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" step="any" name="f_cost_1" placeholder="€" min="0">
+                    </td>
+                    <td>
+                        <input type="number" step="any" name="f_used_1" placeholder="g / mL / unité" min="0">
+                    </td>
+                    <td>
+                        <input type="text" name="f_total_1" placeholder="€0.00" readonly>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+<tr>
+        <td colspan="5">Coût total de la recette :</td>
+        <td id="grandTotal" placeholder="€0.00">€0.00</td>
+    </tr>
+    </tfoot>
+        </table>
+        <button type="button" data-add>+ Ajouter un ingrédient supplémentaire</button>
+        <button type="submit">Envoyer</button>
+    </form>
 
-  <table id="tableau">
-    <thead>
-      <tr>
-        <th>Nom</th>
-        <th>Quantité</th>
-        <th>Prix</th>
-        <th>Prix total</th>
-      </tr>
-    </thead>
-    <tbody id="liste-ingredients">
-    </tbody>
-  </table>
-
-  <p>Prix total de la recette: <span id="prix-total">0</span></p>
-</body>
-    
     <script>
-    var ingredients = [];
-
-function ajouterIngredient() {
-  var nom = document.getElementById('nom').value;
-  var quantite = parseFloat(document.getElementById('quantite').value);
-  var prix = parseFloat(document.getElementById('prix').value);
-
-  ingredients.push({
-    nom: nom,
-    quantite: quantite,
-    prix: prix
-  });
-
-  actualiserTableau();
-}
-
-function actualiserTableau() {
-  var liste = document.getElementById('liste-ingredients');
-  var prixTotal = 0;
-
-  liste.innerHTML = '';
   
-  for (var i = 0; i < ingredients.length; i++) {
-    var ingredient = ingredients[i];
-    var tr = document.createElement('tr');
+    let rowNumber = 1; // on commence avec une ligne
 
-    tr.innerHTML = '<td>' + ingredient.nom + '</td>' +
-                   '<td>' + ingredient.quantite + '</td>' +
-                   '<td>' + ingredient.prix + '</td>' +
-                   '<td>' + (ingredient.quantite * ingredient.prix).toFixed(2) + '</td>';
-    liste.appendChild(tr);
+    // Ajout d'ingrédient supplémentaire
+    document.querySelector("button[type='button']").addEventListener('click', function() {
+        rowNumber++;
+        let newRow = `
+        <tr id="row_${rowNumber}" class="ingred-row">
+            <td colspan="2">
+                <input type="text" name="f_ingredients_${rowNumber}">
+            </td>
+            <td>
+                <input type="number" step="any" name="f_quantity_${rowNumber}" placeholder="g / mL / unité" min="0">
+            </td>
+            <td>
+                <input type="number" step="any" name="f_cost_${rowNumber}" placeholder="€" min="0">
+            </td>
+            <td>
+                <input type="number" step="any" name="f_used_${rowNumber}" placeholder="g / mL / unité" min="0">
+            </td>
+            <td>
+                <input type="text" name="f_total_${rowNumber}" placeholder="€0.00" readonly>
+            </td>
+        </tr>`;
 
-    prixTotal += ingredient.quantite * ingredient.prix;
-  }
+        let tbody = document.querySelector("tbody");
+        tbody.insertAdjacentHTML('beforeend', newRow);
+    });
 
-  document.getElementById('prix-total').textContent = prixTotal.toFixed(2);
+    // Fonction pour calculer le coût total
+    function calculateTotal() {
+        let grandTotal = 0;
+        for (let i = 1; i <= rowNumber; i++) {
+            let quantity = document.querySelector(`[name="f_quantity_${i}"]`).value;
+            let cost = document.querySelector(`[name="f_cost_${i}"]`).value;
+            let used = document.querySelector(`[name="f_used_${i}"]`).value;
+            if (quantity && cost && used) {
+                let total = (cost / quantity) * used;
+                document.querySelector(`[name="f_total_${i}"]`).value = `€${total.toFixed(2)}`;
+                grandTotal += total;
+            }
+        }
+        return grandTotal;
+    }
+
+    // Soumission du formulaire pour le calcul
+    document.getElementById("recipe-calculator-desktop").addEventListener('submit', function(event) {
+        event.preventDefault();
+        let grandTotal = calculateTotal();
+        alert(`Le coût total est: €${grandTotal.toFixed(2)}`);
+    });
+    function calculateTotal() {
+    let grandTotal = 0;
+    for (let i = 1; i <= rowNumber; i++) {
+        let quantity = document.querySelector(`[name="f_quantity_${i}"]`).value;
+        let cost = document.querySelector(`[name="f_cost_${i}"]`).value;
+        let used = document.querySelector(`[name="f_used_${i}"]`).value;
+        if (quantity && cost && used) {
+            let total = (cost / quantity) * used;
+            document.querySelector(`[name="f_total_${i}"]`).value = `€${total.toFixed(2)}`;
+            grandTotal += total;
+        }
+    }
+
+    // Mise à jour du coût total dans le pied de table
+    document.getElementById("grandTotal").textContent = `€${grandTotal.toFixed(2)}`;
+
+    return grandTotal;
 }
 
 </script>
+
 </body>
 
 </html>
