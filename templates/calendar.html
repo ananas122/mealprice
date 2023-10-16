@@ -2,23 +2,85 @@
 <html>
 <head>
   <title>Recettes</title>
+  <!-- CSS pour Font Awesome, Dashboard et Boxicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- Lien vers les fichiers CSS de la barre latérale et des ingrédients -->
   <link rel="stylesheet" href="static/css/dashboard.css">
-  <link rel="stylesheet" href="static/css/ingredients.css">
   <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+
+  <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- FullCalendar CSS et JS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js"></script>
+</head>
 <body>
-  <h2>Recettes</h2>
+  <h2>calendar</h2>
   <div class="sidebar">
     <!-- Contenu de la barre latérale depuis dashboard.css -->
-  </div>    <h2>prix de la recette par portion</h2>
+  </div>
 
-    <div class="search-filter">
-        <input type="text" id="name" placeholder="Nom">
-        <input type="text" id="reference" placeholder="Référence interne">
-        <input type="text" id="category" placeholder="Catégorie">
-        <input type="number" id="unit_cost" placeholder="Coût unitaire">
-        <input type="number" id="stock_quantity" placeholder="Quantité(s) en stock">
-        <button id="addIngredient">Ajouter une recette </button>
-    </div>
+  <h3>le calendar api google</h3>
+  <div id='calendar'></div>
+  <div>
+    <button onclick="ouvrirDialogue()">Ajouter</button>
+    <button onclick="supprimerEvenement()">Supprimer un événement</button>
+  </div>
+
+  <div id="dialogueBox" style="display:none;">
+    <ul>
+      <li><input type="checkbox" id="diner" value="Dîner"> <label for="diner">Dîner</label></li>
+      <li><input type="checkbox" id="breakfast" value="Breakfast"> <label for="breakfast">Breakfast</label></li>
+      <!-- Ajoutez d'autres éléments de liste ici -->
+    </ul>
+    <button onclick="ajouterEvenement()">Ajouter</button>
+  </div>
+
+  <script>
+    var recettes = {
+      'Dîner': 'Recette de lasagnes',
+      'Breakfast': 'Recette de pancakes',
+      // Ajoutez d'autres recettes ici
+    };
+    var calendar;
+
+    function ouvrirDialogue() {
+      document.getElementById("dialogueBox").style.display = "block";
+    }
+
+    function ajouterEvenement() {
+      var checkboxes = document.querySelectorAll('#dialogueBox input[type="checkbox"]:checked');
+      for (var i = 0; i < checkboxes.length; i++) {
+        var typeEvenement = checkboxes[i].value;
+        if (recettes[typeEvenement]) {
+          calendar.addEvent({
+            title: typeEvenement + ' - ' + recettes[typeEvenement],
+            start: new Date().toISOString(),
+            allDay: true
+          });
+        }
+      }
+      document.getElementById("dialogueBox").style.display = "none";
+    }
+
+    function supprimerEvenement() {
+      var premierEvenement = calendar.getEvents()[0];
+      if (premierEvenement) {
+        premierEvenement.remove();
+      }
+    }
+
+    $(document).ready(function() {
+      var calendarEl = document.getElementById('calendar');
+      calendar = new FullCalendar.Calendar(calendarEl, {
+        selectable: true,
+        dateClick: function(info) {
+          alert('Date sélectionnée: ' + info.dateStr);
+          // Vous pouvez ajouter ici une logique pour gérer la date cliquée
+        }
+      });
+      calendar.render();
+    });
+  </script>
+</body>
+</html>
