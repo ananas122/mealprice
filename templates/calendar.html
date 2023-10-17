@@ -13,6 +13,8 @@
   <!-- FullCalendar CSS et JS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.css">
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js"></script>
+
 </head>
 <body>
   <h2>calendar</h2>
@@ -99,6 +101,12 @@ $(document).ready(function() {
     selectable: true,
     select: function(info) {
       ouvrirDialogue(info);
+    },
+    eventClick: function(info) {
+    const eventStart = info.event.start;  // Obtenir l'objet Date du début de l'événement
+    const eventStartTime = eventStart.toLocaleTimeString();  // Convertir en chaîne de caractères de l'heure locale
+
+    alert('Événement cliqué: ' + info.event.title + ' à ' + eventStartTime);
     }
   });
   calendar.render();
