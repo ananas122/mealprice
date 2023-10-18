@@ -77,10 +77,15 @@ function ouvrirDialogue(info) {
 // Fonction pour ajouter un événement
 async function ajouterEvenement() {
   const startDate = document.getElementById("dialogueBox").getAttribute("data-start");
-  const heureDebut = document.getElementById("heureDebut").value;
-  const startDateTime = startDate + "T" + heureDebut + ":00";
+const heureDebut = document.getElementById("heureDebut").value;
 
-  const checkboxes = document.querySelectorAll('#dialogueBox input[type="checkbox"]:checked');
+// Séparez la date et l'heure
+const [annee, mois, jour] = startDate.split('-');
+const [heure, minutes] = heureDebut.split(':');
+
+// Créez une nouvelle instance de Date avec la date et l'heure spécifiées
+const startDateTime = new Date(annee, mois - 1, jour, heure, minutes);
+const checkboxes = document.querySelectorAll('#dialogueBox input[type="checkbox"]:checked');
   
   for (let checkbox of checkboxes) {
     const typeEvenement = checkbox.value;
