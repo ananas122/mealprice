@@ -13,7 +13,6 @@
   <!-- FullCalendar CSS et JS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.css">
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js"></script>
 
 </head>
 <body>
@@ -33,16 +32,16 @@
     <ul>
       <li><input type="checkbox" id="diner" value="Dîner"> <label for="diner">Dîner</label></li>
       <li><input type="checkbox" id="breakfast" value="Breakfast"> <label for="breakfast">Breakfast</label></li>
-       <li><input type="time" id="heureDebut"><li>
+       <li><input type="time" id="heureDebut"></li>
     <input type="text" id="rechercheRecette" placeholder="Rechercher une recette...">
-<button onclick="rechercher()">Rechercher</button>
-
-    </ul>
+ </ul>
+    <button onclick="rechercher()">Rechercher</button>
     <button onclick="ajouterEvenement()">Ajouter</button>
   </div>
 
   <script>
   // Variable pour stocker la recette sélectionnée
+var calendar;
 var recetteSelectionnee = null;
 
 // Fonction pour récupérer la première recette correspondant à une recherche
@@ -60,11 +59,20 @@ async function rechercher() {
 }
 
 // Fonction pour ouvrir la boîte de dialogue
+// Fonction pour ouvrir la boîte de dialogue
 function ouvrirDialogue(info) {
-  document.getElementById("dialogueBox").style.display = "block";
-  const start = info.startStr;
-  document.getElementById("dialogueBox").setAttribute("data-start", start);
+  if (info && info.startStr) {
+    document.getElementById("dialogueBox").style.display = "block";
+    const start = info.startStr;
+    document.getElementById("dialogueBox").setAttribute("data-start", start);
+  } else {
+    // Gérer le cas où info est undefined
+    document.getElementById("dialogueBox").style.display = "block";
+    document.getElementById("dialogueBox").removeAttribute("data-start");
+  }
 }
+
+
 
 // Fonction pour ajouter un événement
 async function ajouterEvenement() {
@@ -100,17 +108,21 @@ $(document).ready(function() {
   calendar = new FullCalendar.Calendar(calendarEl, {
     selectable: true,
     select: function(info) {
+       if (info && info.startStr) {
       ouvrirDialogue(info);
-    },
+      console.log("Date de début sélectionnée:", info.startStr);
+    }
+  },
     eventClick: function(info) {
-    const eventStart = info.event.start;  // Obtenir l'objet Date du début de l'événement
-    const eventStartTime = eventStart.toLocaleTimeString();  // Convertir en chaîne de caractères de l'heure locale
+      const eventStart = info.event.start;  // Obtenir l'objet Date du début de l'événement
+      const eventStartTime = eventStart.toLocaleTimeString();  // Convertir en chaîne de caractères de l'heure locale
 
-    alert('Événement cliqué: ' + info.event.title + ' à ' + eventStartTime);
+      alert('Événement cliqué: ' + info.event.title + ' à ' + eventStartTime);
     }
   });
   calendar.render();
 });
+
 </script>
 </body>
 </html>
