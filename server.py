@@ -72,8 +72,6 @@ def ingredients():
 @app.route('/edit_ingredient', methods=['POST'])
 def edit_ingredient():
     ingredient_id = request.form.get('ingredient_id')
-    # Récupérez les détails de l'ingrédient à partir de la base de données en utilisant l'ID
-    # Effectuez les modifications nécessaires
 
     # Redirigez l'utilisateur vers la page des ingrédients après l'édition
     return redirect('/ingredients')
