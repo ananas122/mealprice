@@ -1,33 +1,44 @@
-from flask import Flask, render_template, redirect, request
-from pymongo import MongoClient
+
+from flask import Flask, render_template, redirect, request, jsonify
 from flask_restful import Api, Resource
+from flask_mysqldb import MySQL
+from datetime import datetime
+from dateutil.parser import parse
 
 
-import sqlite3
+# Charger les variables d'environnement
+from dotenv import load_dotenv
+load_dotenv()
+import os
+
 
 app = Flask(__name__)
 api = Api(app)
 
-# Créez une connexion à la base de données SQLite
-client = MongoClient('mongodb://localhost:27017/')
-db = client['mp']
-ingredients_collection = db['ingredients']
-events_collection = db['events']
+# Configuration de la base de données MySQL en utilisant les variables d'environnement
+app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
+app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
+app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
+app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 
-url = "mongodb://localhost:27017/"
+# Initialisez l'extension Flask-MySQL
+mysql = MySQL(app)
 
 
 @app.route('/add_ingredient', methods=['POST'])
 def add_ingredient():
-    ingredient_data = {
-        'name': request.json.get('name'),
-        'reference': request.json.get('reference'),
-        'category': request.json.get('category'),
-        'supplier': request.json.get('supplier'),
-        'unit_cost': request.json.get('unit_cost'),
-        'stock_quantity': request.json.get('stock_quantity')
-    }
-    ingredients_collection.insert_one(ingredient_data)
+    cur = mysql.connection.cursor()
+    name = request.json.get('name')
+    category = request.json.get('category')
+    supplier = request.json.get('supplier')
+    unit_cost = request.json.get('unit_cost')
+    stock_quantity = request.json.get('stock_quantity')
+
+    cur.execute("INSERT INTO ingredients (name, category, supplier, unit_cost, stock_quantity) VALUES (%s, %s, %s, %s, %s, %s)",
+                (name, category, supplier, unit_cost, stock_quantity))
+    mysql.connection.commit()
+    cur.close()
+
     return 'Ingrédient ajouté avec succès', 201
 
 
@@ -95,8 +106,51 @@ class Event(Resource):
         events.append(new_event)
         return new_event, 201
 
-
 api.add_resource(Event, "/event", "/event/<string:event_id>")
+
+
+@app.route('/get_events', methods=['GET'])
+def get_events():
+    cur = mysql.connection.cursor()
+    # Adaptez cette requête à votre structure de table
+    cur.execute("SELECT * FROM events")
+    events = cur.fetchall()
+    cur.close()
+
+    return jsonify(events), 200
+
+
+@app.route('/save_event', methods=['POST'])
+def save_event():
+    cur = mysql.connection.cursor()
+    event_data = request.json
+    title = event_data.get('title')
+    start_datetime = event_data.get('start_datetime')
+    print(f"Title: {title}, Start Time: {start_datetime}")  # Debug log
+
+    # Convertir la date en un objet datetime
+    try:
+        datetime_obj = parse(start_datetime)
+    except Exception as e:
+        print(f"Erreur lors de la conversion de la date: {e}")  # Debug log
+        return 'Format de date invalide', 400
+
+    # Convertir en format MySQL
+    mysql_format = datetime_obj.strftime('%Y-%m-%d %H:%M:%S')
+
+    try:
+        cur.execute("INSERT INTO events (title, start_datetime) VALUES (%s, %s)",
+                    (title, mysql_format))
+        mysql.connection.commit()
+    except Exception as e:
+        # Debug log
+        print(f"Erreur lors de l'insertion dans la base de données: {e}")
+        return "Erreur lors de la sauvegarde de l'événement", 500
+
+    cur.close()
+
+    return 'Événement sauvegardé', 201
+
 
 
 @app.route('/get_product_image', methods=['GET'])
