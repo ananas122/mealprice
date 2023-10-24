@@ -2,41 +2,35 @@
 <html>
 
 <head>
-    <title>MealPrice</title>
-   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <title>MealPrice recette </title>
+   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dashboard.css') }}">
-    <script src="app.js"></script>
 
 
 </head>
 
 <body>
     <header>
-        <img src="../images/logo.png" alt="logo">
+        <img src="static/images/logo.png" alt="logo">
         <h1 id="site-title">MealPrice</h1>
-        <p id="site-description">La recette de vos économies</p>
+        <p id="site-description">La recette de vos économies!</p>
     </header>
 
     <nav>
-        <ul>
-            <li><a href="/">Accueil</a></li>
+       <!--   -->   <ul>
+     <li><a href="/">Accueil</a></li>
             <li><a href="/ingredients">Ingrédients</a></li>
             <li><a href="/recettes">Recettes</a></li>
             <li><a href="/calendar">Calendar</a></li>
             <li><a href="/stocks">Stocks</a></li>
             <li><a href="/calculator">Calculator</a></li>
             <li><a href="/dashboard">dashboard</a></li>
-        </ul>
+        </ul>   -->
         
     </nav>
 
     <main>
-        <h2>Description</h2>
-        MealPrice est une application novatrice con&ccedil;ue pour simplifier la gestion des co&ucirc;ts dans le domaine de la restauration, &agrave; la fois pour les particuliers passionn&eacute;s de cuisine et pour les professionnels du secteur de la restauration. Cette application r&eacute;volutionnaire offre une solution compl&egrave;te pour g&eacute;rer les d&eacute;penses li&eacute;es &agrave; la pr&eacute;paration de repas, qu'il s'agisse d'un d&icirc;ner en famille, d'un repas d'entreprise ou de la gestion d'un menu complet dans un restaurant.Pour les particuliers, MealPrice facilite la planification des repas en fournissant des estimations pr&eacute;cises des co&ucirc;ts des ingr&eacute;dients n&eacute;cessaires &agrave; une recette donn&eacute;e. Il permet &eacute;galement de suivre les d&eacute;penses li&eacute;es &agrave; 
-        la cuisine et de g&eacute;rer efficacement le stock d'ingr&eacute;dients. MealPrice est l'outil parfait pour ceux qui souhaitent cuisiner &agrave; la maison tout en contr&ocirc;lant leur budget alimentaire.Pour les professionnels de la restauration, MealPrice est une v&eacute;ritable r&eacute;volution. Il simplifie la gestion des co&ucirc;ts des menus, des commandes et du stock d'ingr&eacute;dients. Il offre une visibilit&eacute; en temps r&eacute;el sur les d&eacute;penses et les marges, permettant aux restaurants de maximiser leurs profits tout en maintenant la qualit&eacute; de leurs plats.MealPrice est une application polyvalente qui s'adresse aux amateurs de cuisine souhaitant &eacute;conomiser sur leurs d&eacute;penses alimentaires et aux entreprises de restauration cherchant &agrave;
-        optimiser leurs marges.
-        Avec MealPrice, la gestion des co&ucirc;ts n'a jamais &eacute;t&eacute; 
-        aussi facile et efficace.
+        <!--  <section class="content"> -->
     <section class="connexion-section">
         <h1><strong>Se connecter</strong></h1>
         <button id="loginBtn">Login</button> <button id="signupBtn">Sign Up</button> <button id="gmailLoginBtn">Login with Gmail</button> 

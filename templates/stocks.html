@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ingrédients</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Inclure les liens vers les fichiers CSS de la barre latérale et des ingrédients -->
+  <link rel="stylesheet" href="static/css/dashboard.css">
+  
+  
+  <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+  <h2>calculator</h2>
+  <div class="sidebar">
+    <!-- Contenu de la barre latérale depuis dashboard.css -->
+  </div>
+  <div id="content-container">
+<body>
+ <select id="recetteList">
+  <option value="recette1">Recette 1</option>
+  <option value="recette2">Recette 2</option>
+</select>
+
+<div data-role="page">
+  <div data-role="content">
+    <section id="RCScaler">
+      <h2>Quelles quantités pour ma recette ?</h2>
+      <form id="RC_Form" method="post" action="/">
+        <p class="lytHelp">Préparez votre recette pour le nombre de convives que vous voulez !</p>
+        <div id="RC_FromTo"></div>
+        <p class="lytHelp">Options : changer d'unités</p>
+        <table id="ingredientsTable">
+          <!-- Votre code HTML de tableau ici -->
+          <tr id="RC_ING_0">
+            <th class="RC_Nro">0</th>
+            <td>
+              <input name="RC_Qty_0" type="number" id="RC_Qty_0" pattern="\d*" class="RCQty RCNum RCFrom" size="4" placeholder="150" required data-role="none" />
+              <select name="RC_Unit_0" id="RC_Unit_0" class="span1 RCUnits" data-role="none">
+                <!-- Vos options de sélection ici -->
+              </select>
+              <input name="RC_Lib_0" type="text" id="RC_Lib_0" class="RCLib" placeholder="Ingrédient (facultatif)" data-role="none" autocomplete="off" />
+            </td>
+            <td>
+              <input name="RC_NewQty_0" type="number" id="RC_NewQty_0" pattern="\d*" class="RCNewQty RCNum RCTo" size="4" data-role="none"/><span id="RC_NewQtyL_0" class="RCNewUnits RCTo"></span>
+            </td>
+          </tr>
+          <!-- ... -->
+        </table>
+        <a href="javascript:void(0);" id="RC_BtAdd" class="btAddT">Ajouter un ingrédient</a>
+      </form>
+    </section>
+
+    <nav id="MCShare">
+      Cela vous plait ? <b>Partagez</b> cet outil !
+      <!-- Votre code pour les boutons de partage ici -->
+    </nav>
+
+    <script type="text/javascript">
+      document.getElementById('RC_BtAdd').addEventListener('click', function() {
+        var table = document.getElementById('ingredientsTable');
+        var rows = table.getElementsByTagName('tr');
+        var lastRow = rows[rows.length-1];
+        var clonedRow = lastRow.cloneNode(true);
+
+        var idNumber = parseInt(clonedRow.id.split('_')[2]) + 1;
+        clonedRow.id = 'RC_ING_' + idNumber;
+        var cells = clonedRow.getElementsByTagName('td');
+        for (var i = 0; i <html cells.length; i++) {
+          var inputs = cells[i].getElementsByTagName('input');
+          for (var j = 0; j <body inputs.length; j++) {
+            var input = inputs[j];
+            input.name = input.name.replace(/_(\d+)$/, '_' + idNumber);
+            input.id = input.id.replace(/_(\d+)$/, '_' + idNumber);
+          }
+          var labels = cells[i].getElementsByTagName('label');
+          for (var j = 0; j <script labels.length; j++) {
+            var label = labels[j];
+            label.setAttribute('for', label.getAttribute('for').replace(/_(\d+)$/, '_' + idNumber));
+          }
+        }
+        table.appendChild(clonedRow);
+      });
+    </script>
+</body>
+</html>
+<div class="panel-body" data-reactid=".0.0.0.0.1"><p data-reactid=".0.0.0.0.1.0">Choose your items below</p>
+<ul class="list-inline item-buttons" data-reactid=".0.0.0.0.1.1"><li class="mb1" data-reactid=".0.0.0.0.1.1.0:$baking powder">
+<button class="btn btn-xs" data-reactid=".0.0.0.0.1.1.0:$baking powder.0">baking powder</button></li><li class="mb1" data-reactid=".0.0.0.0.1.1.0:$chocolate chips">
+<button class="btn btn-xs" data-reactid=".0.0.0.0.1.1.0:$chocolate chips.0">chocolate chips</button></li><li class="mb1" data-reactid=".0.0.0.0.1.1.0:$cacao powder"><button class="btn btn-xs" data-reactid=".0.0.0.0.1.1.0:$cacao powder.0">cacao powder</button></li>
+<li class="mb1" data-reactid=".0.0.0.0.1.1.0:$eggs"><button class="btn btn-xs" data-reactid=".0.0.0.0.1.1.0:$eggs.0">eggs</button></li><li class="mb1" data-reactid=".0.0.0.0.1.1.0:$flour"><button class="btn btn-xs" data-reactid=".0.0.0.0.1.1.0:$flour.0">flour</button></li>
+<li class="mb1" data-reactid=".0.0.0.0.1.1.0:$milk"><button class="btn btn-xs" data-reactid=".0.0.0.0.1.1.0:$milk.0">milk</button></li><li class="mb1" data-reactid=".0.0.0.0.1.1.0:$shortening"><button class="btn btn-xs" data-reactid=".0.0.0.0.1.1.0:$shortening.0">shortening</button></li>
+<li class="mb1" data-reactid=".0.0.0.0.1.1.0:$sugar"><button class="btn btn-xs" data-reactid=".0.0.0.0.1.1.0:$sugar.0">sugar</button></li><li class="mb1" data-reactid=".0.0.0.0.1.1.0:$vanilla"><button class="btn btn-xs" data-reactid=".0.0.0.0.1.1.0:$vanilla.0">vanilla</button></li>
+<li class="mb1" data-reactid=".0.0.0.0.1.1.0:$vegetable oil"><button class="btn btn-xs" data-reactid=".0.0.0.0.1.1.0:$vegetable oil.0">vegetable oil</button></li><li class="mb1" data-reactid=".0.0.0.0.1.1.0:$yeast"><button class="btn btn-xs" data-reactid=".0.0.0.0.1.1.0:$yeast.0">yeast</button></li>
+<li class="mb1" data-reactid=".0.0.0.0.1.1.1"><button class="btn btn-xs" data-reactid=".0.0.0.0.1.1.1.0">something else</button></li></ul><div class="form-group input-row" data-reactid=".0.0.0.0.1.2:$butter"><div class="col-sm-2" data-reactid=".0.0.0.0.1.2:$butter.0"><input class="form-control input-sm" type="number" value="1" data-reactid=".0.0.0.0.1.2:$butter.0.0"></div><div class="col-sm-4" data-reactid=".0.0.0.0.1.2:$butter.1"><p class="form-control-static text-overflow" data-reactid=".0.0.0.0.1.2:$butter.1.0">
+<span data-reactid=".0.0.0.0.1.2:$butter.1.0.0">sticks</span><span data-reactid=".0.0.0.0.1.2:$butter.1.0.1"> of </span><strong data-reactid=".0.0.0.0.1.2:$butter.1.0.2">butter</strong><span data-reactid=".0.0.0.0.1.2:$butter.1.0.3"> at</span></p></div><div class="col-sm-4" data-reactid=".0.0.0.0.1.2:$butter.2"><div class="input-group input-group-sm" data-reactid=".0.0.0.0.1.2:$butter.2.0"><span class="input-group-addon" data-reactid=".0.0.0.0.1.2:$butter.2.0.0">$</span><input type="number" class="form-control" value="1.08" data-reactid=".0.0.0.0.1.2:$butter.2.0.1"><span class="input-group-addon" data-reactid=".0.0.0.0.1.2:$butter.2.0.2"><span data-reactid=".0.0.0.0.1.2:$butter.2.0.2.0">/
+</span><sub data-reactid=".0.0.0.0.1.2:$butter.2.0.2.1">stick</sub></span></div></div><div class="col-sm-2" data-reactid=".0.0.0.0.1.2:$butter.3"><button class="btn btn-link btn-xs" data-reactid=".0.0.0.0.1.2:$butter.3.0">remove</button></div></div><div class="form-group input-row" data-reactid=".0.0.0.0.1.2:$cinnamon"><div class="col-sm-2" data-reactid=".0.0.0.0.1.2:$cinnamon.0"><input class="form-control input-sm" type="number" value="1" data-reactid=".0.0.0.0.1.2:$cinnamon.0.0"></div><div class="col-sm-4" data-reactid=".0.0.0.0.1.2:$cinnamon.1"><p class="form-control-static text-overflow" data-reactid=".0.0.0.0.1.2:$cinnamon.1.0"><span data-reactid=".0.0.0.0.1.2:$cinnamon.1.0.0">tsps</span>
+<span data-reactid=".0.0.0.0.1.2:$cinnamon.1.0.1"> of </span><strong data-reactid=".0.0.0.0.1.2:$cinnamon.1.0.2">cinnamon</strong><span data-reactid=".0.0.0.0.1.2:$cinnamon.1.0.3"> at</span></p></div><div class="col-sm-4" data-reactid=".0.0.0.0.1.2:$cinnamon.2"><div class="input-group input-group-sm" data-reactid=".0.0.0.0.1.2:$cinnamon.2.0"><span class="input-group-addon" data-reactid=".0.0.0.0.1.2:$cinnamon.2.0.0">$</span><input type="number" class="form-control" value="0.09" data-reactid=".0.0.0.0.1.2:$cinnamon.2.0.1"><span class="input-group-addon" data-reactid=".0.0.0.0.1.2:$cinnamon.2.0.2"><span data-reactid=".0.0.0.0.1.2:$cinnamon.2.0.2.0">/</span><sub data-reactid=".0.0.0.0.1.2:$cinnamon.2.0.2.1">tsp</sub></span></div></div><div class="col-sm-2" data-reactid=".0.0.0.0.1.2:$cinnamon.3"><button class="btn btn-link btn-xs" data-reactid=".0.0.0.0.1.2:$cinnamon.3.0">remove</button></div></div></div>

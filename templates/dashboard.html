@@ -33,7 +33,7 @@
           <span class="tooltip">Index1</span>
         </li>
         <li>
-          <a href="#">
+          <a href="/user.html">
             <i class="bx bx-user"></i>
             <span class="links_name">User</span>
           </a>
@@ -72,7 +72,7 @@
             <i class="bx bx-cog"></i>
             <span class="links_name">Calculator</span>
           </a>
-          <span class="tooltip">Calculator</span>
+          <span class="tooltip">calculer</span>
         </li>
       </ul>
     </div>
@@ -138,7 +138,12 @@ $(document).ready(function () {
     $("#calendar-link").click(function(e) {
         handleLinkClick(e, "/calendar");
     });
-    
+   $("#stocks-link").click(function(e) {
+        handleLinkClick(e, "/stocks");
+    }); 
+   $("#user-link").click(function(e) {
+        handleLinkClick(e, "/user");
+    });
 });
 </script>
 </body>

@@ -46,7 +46,7 @@ input {
 button {
     width: 100%;
     padding: 10px;
-    background-color: #007BFF;
+    background-color: red;
     color: white;
     border: none;
     border-radius: 4px;
@@ -94,53 +94,50 @@ p {
                 <tr>
                     <td colspan="6"><h1>Ingrédients</h1></td>
                 </tr>
-                <tr>
-                    <td colspan="2">Nom de l'ingrédient</td>
-                    <td>Qté achetée</td>
-                    <td>Coût des marchandises</td>
-                    <td>Qté utilisée dans la recette</td>
-                    <td>Coût total</td>
+                <tr class="ingredient-heading">
+                    <td colspan="2" class="col-33">Nom de l'ingrédient</td>
+                    <td class="col-16">Qté achetée</td>
+                    <td class="col-16">Coût des marchandises</td>
+                    <td class="col-16">Qté utilisée dans la recette</td>
+                    <td class="col-16">Coût total</td>
                 </tr>
-                <!-- Vous pouvez dupliquer cette ligne pour chaque ingrédient -->
-                <tr id="row_1">
+                <tr id="row_1" class="ingred-row">
                     <td colspan="2">
-                        <input type="text" name="f_ingredients_1">
-                    </td>
-                    <td>
-                        <input type="number" step="any" name="f_quantity_1" min="0">
-                        <select name="f_unit_1">
-                            <option value="g">g</option>
-                            <option value="mg">mg</option>
-                            <option value="L">L</option>
-                            <option value="mL">mL</option>
-                            <option value="unité">unité</option>
+                        <select name="f_ingredients_1">
+                            <option value="">Sélectionnez un ingrédient</option>
+                            <!-- Ajoutez ici des options pour chaque ingrédient avec leur nom -->
+                            <option value="Ingrédient 1">Ingrédient 1</option>
+                            <option value="Ingrédient 2">Ingrédient 2</option>
+                            <option value="Ingrédient 3">Ingrédient 3</option>
+                            <!-- Ajoutez d'autres ingrédients ici -->
                         </select>
                     </td>
                     <td>
-                        <input type="number" step="any" name="f_cost_1" placeholder="€" min="0">
+                        <input type="number" step="any" name="f_quantity_1" placeholder="g / mL / each" min="0" data-row-qty>
                     </td>
                     <td>
-                        <input type="number" step="any" name="f_used_1" placeholder="g / mL / unité" min="0">
+                        <input type="number" step="any" name="f_cost_1" placeholder="$" min="0" data-row-cost>
                     </td>
                     <td>
-                        <input type="text" name="f_total_1" placeholder="€0.00" readonly>
+                        <input type="number" step="any" name="f_used_1" placeholder="g / mL / each" min="0" data-row-used>
+                    </td>
+                    <td class="total-cost">
+                        <input type="text" name="f_total_1" placeholder="$0.00" readonly data-cost>
                     </td>
                 </tr>
-            </tbody>
-            <tfoot>
-<tr>
-        <td colspan="5">Coût total de la recette :</td>
-        <td id="grandTotal" placeholder="€0.00">€0.00</td>
-    </tr>
-    </tfoot>
+                <!-- Répétez ces lignes pour d'autres ingrédients -->
+                <tr>
+                    <td colspan="6">Coût total de la recette :</td>
+                    <td id="grandTotal" placeholder="$0.00">$0.00</td>
+                </tr>
+            </tfoot>
         </table>
         <button type="button" data-add>+ Ajouter un ingrédient supplémentaire</button>
         <button type="submit">Envoyer</button>
     </form>
 
     <script>
-  
-    let rowNumber = 1; // on commence avec une ligne
+    let rowNumber = 1; // On commence avec une ligne
 
     // Ajout d'ingrédient supplémentaire
     document.querySelector("button[type='button']").addEventListener('click', function() {
@@ -148,70 +145,185 @@ p {
         let newRow = `
         <tr id="row_${rowNumber}" class="ingred-row">
             <td colspan="2">
-                <input type="text" name="f_ingredients_${rowNumber}">
+                <select name="f_ingredients_${rowNumber}">
+                    <option value="">Sélectionnez un ingrédient</option>
+                    <!-- Ajoutez ici des options pour chaque ingrédient avec leur nom -->
+                    <option value="Ingrédient 1">Ingrédient 1</option>
+                    <option value="Ingrédient 2">Ingrédient 2</option>
+                    <option value="Ingrédient 3">Ingrédient 3</option>
+                    <!-- Ajoutez d'autres ingrédients ici -->
+                </select>
             </td>
             <td>
-                <input type="number" step="any" name="f_quantity_${rowNumber}" placeholder="g / mL / unité" min="0">
+                <input type="number" step="any" name="f_quantity_${rowNumber}" min="0">
+                <select name="f_unit_${rowNumber}">
+                    <option value="g">g</option>
+                    <option value="mg">mg</option>
+                    <option value="L">L</option>
+                    <option value="mL">mL</option>
+                    <option value="kilo">kilo</option>
+                </select>
             </td>
             <td>
                 <input type="number" step="any" name="f_cost_${rowNumber}" placeholder="€" min="0">
             </td>
             <td>
-                <input type="number" step="any" name="f_used_${rowNumber}" placeholder="g / mL / unité" min="0">
+                <input type="number" step="any" name="f_used_${rowNumber}" min="0">
+                <select name="f_used_unit_${rowNumber}">
+                    <option value="g">g</option>
+                    <option value="mg">mg</option>
+                    <option value="L">L</option>
+                    <option value="mL">mL</option>
+                    <option value="kilo">kilo</option>
+                </select>
             </td>
             <td>
                 <input type="text" name="f_total_${rowNumber}" placeholder="€0.00" readonly>
             </td>
         </tr>`;
-
+        
         let tbody = document.querySelector("tbody");
         tbody.insertAdjacentHTML('beforeend', newRow);
+    });
+
+    // Lorsqu'un ingrédient est sélectionné, mettez à jour le coût des marchandises
+    document.querySelectorAll("select[name^='f_ingredients']").forEach(select => {
+        select.addEventListener('change', function(event) {
+            const selectedRowNumber = event.target.name.match(/\d+/)[0]; // Obtenez le numéro de la ligne
+            const ingredientName = event.target.value;
+            const costInput = document.querySelector(`input[name="f_cost_${selectedRowNumber}"]`);
+            costInput.value = getIngredientPrice(ingredientName);
+            calculateTotal();
+        });
+    });
+
+    // Écoutez les changements dans les quantités et mettez à jour le coût total
+    document.querySelectorAll("input[name^='f_quantity']").forEach(input => {
+        input.addEventListener('input', calculateTotal);
+    });
+
+    document.querySelectorAll("input[name^='f_used']").forEach(input => {
+        input.addEventListener('input', calculateTotal);
+    });
+
+    // Soumission du formulaire pour le calcul
+    document.getElementById("recipe-calculator-desktop").addEventListener('submit', function(event) {
+        event.preventDefault();
+        calculateTotal();
     });
 
     // Fonction pour calculer le coût total
     function calculateTotal() {
         let grandTotal = 0;
         for (let i = 1; i <= rowNumber; i++) {
-            let quantity = document.querySelector(`[name="f_quantity_${i}"]`).value;
-            let cost = document.querySelector(`[name="f_cost_${i}"]`).value;
-            let used = document.querySelector(`[name="f_used_${i}"]`).value;
-            if (quantity && cost && used) {
+            let quantity = parseFloat(document.querySelector(`[name="f_quantity_${i}"]`).value);
+            let unit = document.querySelector(`[name="f_unit_${i}"]`).value;
+            let cost = parseFloat(document.querySelector(`[name="f_cost_${i}"]`).value);
+            let used = parseFloat(document.querySelector(`[name="f_used_${i}"]`).value);
+
+            // Conversion d'unité
+            switch (unit) {
+                case "mg":
+                    quantity /= 1000; // Convertir mg en g
+                    break;
+                case "L":
+                    quantity *= 1000; // Convertir L en mL
+                    break;
+                case "kilo":
+                    quantity *= 1000; // Convertir kilo en g
+                    break;
+            }
+
+            if (!isNaN(quantity) && !isNaN(cost) && !isNaN(used)) {
                 let total = (cost / quantity) * used;
                 document.querySelector(`[name="f_total_${i}"]`).value = `€${total.toFixed(2)}`;
                 grandTotal += total;
             }
         }
-        return grandTotal;
+
+        // Mettez à jour le coût total dans le pied de table
+        document.getElementById("grandTotal").textContent = `€${grandTotal.toFixed(2)}`;
     }
+    $(document).ready(function() {
+    let recette = JSON.parse(localStorage.getItem("recette"));
 
-    // Soumission du formulaire pour le calcul
-    document.getElementById("recipe-calculator-desktop").addEventListener('submit', function(event) {
-        event.preventDefault();
-        let grandTotal = calculateTotal();
-        alert(`Le coût total est: €${grandTotal.toFixed(2)}`);
-    });
-    function calculateTotal() {
-    let grandTotal = 0;
-    for (let i = 1; i <= rowNumber; i++) {
-        let quantity = document.querySelector(`[name="f_quantity_${i}"]`).value;
-        let cost = document.querySelector(`[name="f_cost_${i}"]`).value;
-        let used = document.querySelector(`[name="f_used_${i}"]`).value;
-        if (quantity && cost && used) {
-            let total = (cost / quantity) * used;
-            document.querySelector(`[name="f_total_${i}"]`).value = `€${total.toFixed(2)}`;
-            grandTotal += total;
-        }
+    if (recette) {
+        // Insertion du nom de la recette
+        $("#nomRecette").text(recette.nom);
+
+        // Insertion des ingrédients dans le tableau
+        recette.ingredients.forEach(function(ingredient) {
+            $("#tableauCalculator").append(`
+                <tr>
+                    <td>${ingredient.nom}</td>
+                    <td>${ingredient.quantite}</td>
+                </tr>
+            `);
+        });
+
+        // Insertion de la méthode
+        $("#methode").text(recette.methode);
     }
+});
+document.addEventListener('DOMContentLoaded', function() {
+    // Récupérer les données de la recette depuis le localStorage
+let recette = JSON.parse(localStorage.getItem("recette"));
 
-    // Mise à jour du coût total dans le pied de table
-    document.getElementById("grandTotal").textContent = `€${grandTotal.toFixed(2)}`;
+// Vérifier si des données de recette sont disponibles
+if (recette) {
+    // Vous pouvez accéder aux propriétés de la recette comme ceci :
+    let nomRecette = recette.nom;
+    let ingredients = recette.ingredients;
+    let methode = recette.methode;
 
-    return grandTotal;
+    // Maintenant, insérez ces données dans le tableau de calculator.html
+    let tableauCalculator = document.getElementById("votre-identifiant-de-tableau");
+    // Assurez-vous de remplacer "votre-identifiant-de-tableau" par l'identifiant réel de votre tableau
+
+    // Créez des éléments HTML pour afficher les données dans le tableau
+    let nomRecetteElement = document.createElement("td");
+    nomRecetteElement.textContent = nomRecette;
+
+    let ingredientsElement = document.createElement("td");
+    ingredientsElement.textContent = ingredients;
+
+    let methodeElement = document.createElement("td");
+    methodeElement.textContent = methode;
+
+    // Créez une nouvelle ligne dans le tableau
+    let nouvelleLigne = document.createElement("tr");
+    nouvelleLigne.appendChild(nomRecetteElement);
+    nouvelleLigne.appendChild(ingredientsElement);
+    nouvelleLigne.appendChild(methodeElement);
+
+    // Ajoutez la nouvelle ligne au tableau
+    tableauCalculator.appendChild(nouvelleLigne);
 }
 
-</script>
+function loadRecipeDetails(recipe_id) {
+    $.ajax({
+        url: `/api/recipe_details/${recipe_id}`,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Supposons que vos ingrédients soient stockés dans une chaîne JSON dans la colonne 'ingredients' de votre base de données
+            let ingredients = JSON.parse(data.ingredients);
 
+            // Parcourez les ingrédients et ajoutez-les au tableau
+            ingredients.forEach(function(ingredient) {
+                // Ajoutez chaque ingrédient au tableau de calculator.html
+                // Ici, vous devez adapter le code en fonction de la structure exacte de votre tableau.
+            });
+        },
+        error: function(error) {
+            console.log("Erreur lors de la récupération des détails de la recette:", error);
+        }
+    });
+}
+
+        // Affichez également la méthode de la recette.
+        document.getElementById("methode").textContent = recette.methode;
+    });
+    </script>
 </body>
-
 </html>
-
