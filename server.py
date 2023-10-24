@@ -4,7 +4,7 @@ from flask_restful import Api, Resource
 from flask_mysqldb import MySQL
 from datetime import datetime
 from dateutil.parser import parse
-
+from flask_cors import CORS
 
 # Charger les variables d'environnement
 from dotenv import load_dotenv
@@ -14,6 +14,8 @@ import os
 
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
+
 
 # Configuration de la base de données MySQL en utilisant les variables d'environnement
 app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
@@ -47,11 +49,9 @@ def add_ingredient():
 def index():
     return render_template('index.html')
 
-
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
-
 
 @app.route('/index1')
 def index1():
@@ -91,6 +91,43 @@ def edit_ingredient():
 @app.route('/calculator')
 def calculator():
     return render_template('calculator.html')
+@app.route('/api/recipes', methods=['GET'])
+def fetch_recipes():
+    query = request.args.get('query')
+    api_key = '6820604bd3a44f849de0112f112d822e'
+    url = f'https://api.spoonacular.com/recipes/complexSearch?apiKey={api_key}&query={query}'
+
+    try:
+        response = requests.get(url)
+        data = response.json()
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/get_recipe/<int:recipe_id>', methods=['GET'])
+def get_recipe(recipe_id):
+    # Code pour faire la requête à l'API Spoonacular ici
+    # Assurez-vous de gérer les réponses de l'API correctement
+    # Ensuite, renvoyez les données de la recette sous forme de JSON
+    recipe_data = {
+        'recipe_id': recipe_id,
+        'recipe_name': 'Nom de la recette',
+        'ingredients': ['Ingrédient 1', 'Ingrédient 2', 'Ingrédient 3'],
+        # Autres données de recette
+    }
+    return jsonify(recipe_data)
+
+
+@app.route('/api/recipe_details/<int:recipe_id>', methods=['GET'])
+def get_recipe_details(recipe_id):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM recettes WHERE id=%s", [recipe_id])
+    recipe = cur.fetchone()
+    cur.close()
+
+    # Convertir la recette en format JSON et la retourner
+    return jsonify(recipe)
+
 
 # calendar
 events = []  # Liste pour stocker des événements de calendrier
