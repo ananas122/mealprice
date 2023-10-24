@@ -10,10 +10,14 @@
 
 <body>
     <header>
-        <img src="static/images/logo.png" alt="logo" class="logo">
+        <img src="static/images/index1.png" alt="logo" class="logo">
         <h1 id="site-title">MealPrice</h1>
         <p id="site-description">La recette de vos économies</p>
-
+<body>
+      <h1 class="title">Hello tous le monde ! </h1>
+      <p id="currentTime"></p>
+     
+ 
         <div class="menu">
             <a href="/" class="menu-item"><i class="fas fa-home"></i> Accueil</a>
             <a href="/ingredients" class="menu-item"><i class="fas fa-leaf"></i> Ingrédients</a>
@@ -24,26 +28,27 @@
             <a href="/dashboard" class="menu-item"><i class="fas fa-chart-line"></i> Dashboard</a>
         </div>
     </header>
-
+<script>function showTime() {
+	document.getElementById('currentTime').innerHTML = new Date().toUTCString();
+}
+showTime();
+setInterval(function () {
+	showTime();
+}, 1000);
+</script>
     <main>
-        <h2>Description</h2>
-        <h3>Dans le monde de la cuisine, la maîtrise des dépenses est un art à part entière. MealPrice vous offre la clarté 
-        et la précision nécessaires pour gérer vos coûts sans compromettre la qualité. Que vous soyez un passionné cuisinant à la maison ou un professionnel 
+        <h2>La recette de vos economies </h2>
+        <h3>Dans le monde de la cuisine, la maîtrise des dépenses est un art à part entière. 
+            MealPrice vous offre la clarté 
+        et la précision nécessaires pour gérer vos coûts sans compromettre la qualité. 
+        Que vous soyez un passionné cuisinant à la maison ou un professionnel 
         gérant un menu de restaurant, découvrez comment chaque ingrédient peut être à la fois délicieux et économique.</h3>
-
-        <section class="connexion-section">
-            <h1><strong>Se connecter</strong></h1>
-            <button id="loginBtn">Login</button> 
-            <button id="signupBtn">Sign Up</button> 
-            <button id="gmailLoginBtn">Login with Gmail</button> 
-            <button id="facebookLoginBtn">Login with Facebook</button>
-        </section>
     </main>
 
     {% block content %} {% endblock%}
 
     <footer>
-        <div class="footer-content">        
+        <div class="footer-content">
             <ul>
                 <li><a href="#">À propos</a></li>
                 <li><a href="#">Services</a></li>
@@ -54,6 +59,7 @@
             <p>&copy; 2023 Votre entreprise. Tous droits réservés.</p>
         </div>
     </footer>
+
 </body>
 
 </html>
