@@ -1,214 +1,194 @@
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Recette</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <link rel="stylesheet" href="static/css/dashboard.css">
+<!DOCTYPE html>
+<html>
 
-        <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
-        <img src="static/images/receipt.png" alt="banniere listes de recettes">
-  
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f4f4f4;
-                padding: 20px;
-            }
+<head>
+    <title>Recette</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="static/css/dashboard.css">
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
 
-            .container {
-                background-color: #fff;
-                padding: 20px;
-                border-radius: 5px;
-                box-shadow: 0 0 10px rgba(0,0,0,0.1);
-                width: 400px;
-                margin: 20px auto;
-            }
-
-            label {
-                display: block;
-                margin-bottom: 8px;
-            }
-
-            input, textarea {
-                width: 100%;
-                padding: 10px;
-                margin-bottom: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
-
-            button {
-                padding: 10px 15px;
-                background-color: #007BFF;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-
-            button:hover {
-                background-color: #0056b3;
-            }
-            .ingredient {
-                display: flex;
-                align-items: center;
-                margin-bottom: 10px;
-            }
-            .ingredient-image {
-            margin-right: 10px;
-            vertical-align: middle;
-    }
-
-            .ingredient input {
-                margin-right: 10px;
-            }
-
-            #addIngredientBtn {
-                margin-top: 10px;
-            }
-        </style>
-    </head>
-    <body>
-    <header>
-    <h1>Add a Recipe</h1>
-        </header>
-        <div class="container">
-    
-        <h1>Cuisine pour tous</h1>
-
-    <input type="text" placeholder="entrez un nom de plat ou aliment" id="searchInput">
-    <button id="randomMeal">Choisir un plat au hasard</button>
-    <div id="results">Entrez le nom d'une recette</div>
-<a href="/calculator.html" id="calculator-link-from-recettes">Aller vers Calculatrice</a>
-    
-    </div>
-    <div class="searchContainer">
-    
-    <!-- Bouton de sélection avec des attributs data-* pour stocker les détails de la recette -->
-    <button class="btn-selectionner" 
-            data-nom="${meal.strMeal}" 
-            data-ingredients='[{"nom": "NomIngredient", "quantite"}]' 
-            data-methode="Méthode ">
-        Sélectionner
-    </button>
-</div>
-
-    <script>
-    const searchInput = document.getElementById("searchInput");
-    const results = document.getElementById("results");
-    const randomMeal = document.getElementById("randomMeal");
-
-    let search = "";
-
-
-    const fetchSearch = async(url) => {
-        meals = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/${url}`)
-        .then(res=> res.json())
-        .then(res=> res.meals)
-    }
-
-    //Search
-
-    const searchDisplay = async() => {
-        await fetchSearch(search);
-
-        if (meals == null){
-            results.innerHTML = `<span class="noResult">Aucun résultat</span>`
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
         }
 
-        results.innerHTML = (
-            meals.map(meal => (
-                `
-                <div class="searchContainer">
-                    <h2>${meal.strMeal}</h2>
-                    <div class="infos">
-                        <div>Origine : ${meal.strArea}</div>
-                        <div>Catégorie : ${meal.strCategory}</div>
-                    </div>
-                    <img src='${meal.strMealThumb}'/><br>
-                </div>
-                `
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
 
-            )).join('')
-        )
-    }
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
 
-    searchInput.addEventListener('input', (e)=>{
-        search = `search.php?s=${e.target.value}`;
-        searchDisplay();
-    })
+        button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-    //Random meal 
+        button:hover {
+            background-color: #0056b3;
+        }
 
-    const randomMealDisplay = async() => {
-        await fetchSearch(`random.php`)
+        .ingredient {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
 
-        results.innerHTML = (
-            meals.map(meal => (
-                `
-                <div class="randomContainer">
-                    <h2>${meal.strMeal}</h2>
-                    <div class="infos">
-                        <div>Origine : ${meal.strArea}</div>
-                        <div>Catégorie : ${meal.strCategory}</div>
-                    </div>
-                    <img src='${meal.strMealThumb}'/>
-                    <p>${meal.strInstructions}</p>
-                </div>
-                `
+        .ingredient-image {
+            margin-right: 10px;
+            vertical-align: middle;
+        }
 
-            ))
-        )
-    }
+        .ingredient input {
+            margin-right: 10px;
+        }
 
-    randomMeal.addEventListener('click', (e)=>{
-        randomMealDisplay();
-    })
-    randomMealDisplay()
+        #addIngredientBtn {
+            margin-top: 10px;
+        }
 
+        #recipeImages {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
 
-// Ajout du code pour la sélection de recettes
-$(".btn-selectionner").click(function() {
-    let recette = {
-        nom: $(this).data("nom"),
-        ingredients: $(this).data("ingredients"),
-        methode: $(this).data("methode")
-    };
+        #recipeImages img {
+            max-width: 100px;
+            height: auto;
+            border-radius: 5px;
+        }
 
-    // Stockage dans localStorage
-    localStorage.setItem("recette", JSON.stringify(recette));
-    alert('Recette sélectionnée !'); // Pour la confirmation
-});
+        .ingredient-img {
+            max-width: 50px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
 
-$(document).ready(function () {
-    
-    function handleLinkClick(e, url) {
-        e.preventDefault();
-        sidebar.classList.add("open");
-        $.get(url, function(data) {
-            $("#content-container").html(data);
-        }).fail(function() {
-            console.log("Erreur lors du chargement de la page " + url + ".");
-        });
-    }
-    $("#calculator-link-from-recettes").click(function(e) {
-    handleLinkClick(e, "/calculator");
-});
+<body>
+    <header>
+        <h1>Look a Recipe</h1>
+    </header>
+    <div class="container">
+        <h1>Cuisine pour tous</h1>
+        <a href="/calculator.html" id="calculator-link-from-recettes">Aller vers Calculatrice</a>
+        <div class="container">
+            <h1>Cuisine pour tous</h1>
+            <input type="text" placeholder="Entrez le nom d'une recette" id="searchInput">
+            <button id="searchRecipe">Rechercher</button>
+            <div id="results">
+                Entrez le nom d'une recette pour commencer la recherche.
+            </div>
+            <div id="recipeDetails" style="display: none;">
+                <h2>Détails de la recette</h2>
+                <div id="recipeName"></div>
+                <div id="recipeIngredients"></div>
+                <div id="recipeInstructions"></div>
+                <div id="recipeImages"></div>
+            </div>
+        </div>
+    </div>
 
-});
-$(".btn-selectionner").click(function() {
-    let recette = {
-        nom: $(this).data("nom"),
-        ingredients: $(this).data("ingredients"),
-        methode: $(this).data("methode")
-    };
+    <script>
+        const searchInput = document.getElementById("searchInput");
+        const searchRecipeBtn = document.getElementById("searchRecipe");
+        const results = document.getElementById("results");
+        const recipeDetails = document.getElementById("recipeDetails");
+        const recipeName = document.getElementById("recipeName");
+        const recipeIngredients = document.getElementById("recipeIngredients");
+        const recipeInstructions = document.getElementById("recipeInstructions");
+        const recipeImages = document.getElementById("recipeImages");
 
-    // Stockage dans localStorage
-    localStorage.setItem("recette", JSON.stringify(recette));
-});
+        const searchRecipe = async () => {
+            const searchQuery = searchInput.value.trim();
+            if (searchQuery === "") {
+                results.innerHTML = "Entrez le nom d'une recette pour commencer la recherche.";
+                return;
+            }
+            const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`);
+            const data = await response.json();
+            if (data.meals) {
+                results.innerHTML = "";
+                data.meals.forEach((meal) => {
+                    const recipeItem = document.createElement("div");
+                    recipeItem.classList.add("recipe-item");
+                    recipeItem.innerHTML = `<h3>${meal.strMeal}</h3>`;
+                    recipeItem.addEventListener("click", () => showRecipeDetails(meal.idMeal));
+                    results.appendChild(recipeItem);
+                });
+            } else {
+                results.innerHTML = "Aucun résultat trouvé.";
+            }
+        };
 
+        const showRecipeDetails = async (recipeId) => {
+            recipeImages.innerHTML = '';
+            const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`);
+            const data = await response.json();
+
+            if (data.meals && data.meals[0]) {
+                const meal = data.meals[0];
+                recipeName.textContent = meal.strMeal;
+                recipeIngredients.innerHTML = `<h4>Ingrédients:</h4> ${getIngredientsList(meal)}`;
+                recipeInstructions.innerHTML = `<h4>Instructions:</h4> ${meal.strInstructions}`;
+
+                const recipeImage = document.createElement("img");
+                recipeImage.src = meal.strMealThumb;
+                recipeImages.appendChild(recipeImage);
+
+                const ingredientsImages = getIngredientsImages(meal);
+                ingredientsImages.forEach((ingredientImage) => {
+                    recipeImages.appendChild(ingredientImage);
+                });
+
+                recipeDetails.style.display = "block";
+            }
+        };
+
+        const getIngredientsImages = (meal) => {
+            const ingredientsImages = [];
+            for (let i = 1; i <= 20; i++) {
+                if (meal[`strIngredient${i}`]) {
+                    const ingredientName = meal[`strIngredient${i}`];
+                    const ingredientImage = document.createElement("img");
+                    ingredientImage.src = `https://www.themealdb.com/images/ingredients/${ingredientName}.png`;
+                    ingredientImage.classList.add("ingredient-img");
+                    ingredientsImages.push(ingredientImage);
+                } else {
+                    break;
+                }
+            }
+            return ingredientsImages;
+        };
+
+        const getIngredientsList = (meal) => {
+            let ingredientsList = "";
+            for (let i = 1; i <= 20; i++) {
+                if (meal[`strIngredient${i}`]) {
+                    ingredientsList += `${meal[`strIngredient${i}`]}: ${meal[`strMeasure${i}`]}<br>`;
+                } else {
+                    break;
+                }
+            }
+            return ingredientsList;
+        };
+
+        searchRecipeBtn.addEventListener("click", searchRecipe);
     </script>
-    </body>
-    </html>
-    
+</body>
+
+</html>
