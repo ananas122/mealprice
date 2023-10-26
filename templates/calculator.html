@@ -186,10 +186,10 @@ p {
         tbody.insertAdjacentHTML('beforeend', newRow);
     });
 
-    // Lorsqu'un ingrédient est sélectionné, mettez à jour le coût des marchandises
+    // Lorsqu'un ingrédient est sélectionné, mis à jour du coût des marchandises
     document.querySelectorAll("select[name^='f_ingredients']").forEach(select => {
         select.addEventListener('change', function(event) {
-            const selectedRowNumber = event.target.name.match(/\d+/)[0]; // Obtenez le numéro de la ligne
+            const selectedRowNumber = event.target.name.match(/\d+/)[0]; // Obtenir le numéro de la ligne
             const ingredientName = event.target.value;
             const costInput = document.querySelector(`input[name="f_cost_${selectedRowNumber}"]`);
             costInput.value = getIngredientPrice(ingredientName);
@@ -197,7 +197,7 @@ p {
         });
     });
 
-    // Écoutez les changements dans les quantités et mettez à jour le coût total
+    // changements dans les quantités et mis à jour le coût total
     document.querySelectorAll("input[name^='f_quantity']").forEach(input => {
         input.addEventListener('input', calculateTotal);
     });
@@ -241,7 +241,7 @@ p {
             }
         }
 
-        // Mettez à jour le coût total dans le pied de table
+        // Mis à jour du coût total 
         document.getElementById("grandTotal").textContent = `€${grandTotal.toFixed(2)}`;
     }
     $(document).ready(function() {
@@ -271,7 +271,7 @@ let recette = JSON.parse(localStorage.getItem("recette"));
 
 // Vérifier si des données de recette sont disponibles
 if (recette) {
-    // Vous pouvez accéder aux propriétés de la recette comme ceci :
+    // permission d accéder aux propriétés de la recette :
     let nomRecette = recette.nom;
     let ingredients = recette.ingredients;
     let methode = recette.methode;
@@ -306,13 +306,12 @@ function loadRecipeDetails(recipe_id) {
         type: 'GET',
         dataType: 'json',
         success: function(data) {
-            // Supposons que vos ingrédients soient stockés dans une chaîne JSON dans la colonne 'ingredients' de votre base de données
+            // ingrédients soient stockés dans une chaîne JSON dans la colonne 'ingredients' de la base de donnees
             let ingredients = JSON.parse(data.ingredients);
 
             // Parcourez les ingrédients et ajoutez-les au tableau
             ingredients.forEach(function(ingredient) {
                 // Ajoutez chaque ingrédient au tableau de calculator.html
-                // Ici, vous devez adapter le code en fonction de la structure exacte de votre tableau.
             });
         },
         error: function(error) {
