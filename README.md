@@ -1,2 +1,2 @@
 # recette
-meal-rice
+meal-price

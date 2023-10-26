@@ -276,11 +276,10 @@ if (recette) {
     let ingredients = recette.ingredients;
     let methode = recette.methode;
 
-    // Maintenant, insérez ces données dans le tableau de calculator.html
+    // insérez ces données dans le tableau de calculator.html
     let tableauCalculator = document.getElementById("votre-identifiant-de-tableau");
-    // Assurez-vous de remplacer "votre-identifiant-de-tableau" par l'identifiant réel de votre tableau
 
-    // Créez des éléments HTML pour afficher les données dans le tableau
+    //  afficher les données dans le tableau
     let nomRecetteElement = document.createElement("td");
     nomRecetteElement.textContent = nomRecette;
 
@@ -300,6 +299,7 @@ if (recette) {
     tableauCalculator.appendChild(nouvelleLigne);
 }
 
+<<<<<<< HEAD
 function loadRecipeDetails(recipe_id) {
     $.ajax({
         url: `/api/recipe_details/${recipe_id}`,
@@ -316,13 +316,82 @@ function loadRecipeDetails(recipe_id) {
         },
         error: function(error) {
             console.log("Erreur lors de la récupération des détails de la recette:", error);
+=======
+function loadRecipeDetails() {
+    // Récupérer la recette sélectionnée depuis le localStorage
+    const selectedRecipe = JSON.parse(localStorage.getItem('selectedRecipe'));
+
+    if (!selectedRecipe) {
+        console.error("Aucune recette sélectionnée !");
+        return;
+    }
+
+    // Ici, vous pouvez extraire des détails tels que le nom de la recette, les ingrédients, etc.
+    const recipeName = selectedRecipe.name;
+    const ingredients = selectedRecipe.ingredients;
+    // ... et autres détails que vous pourriez avoir
+
+    // Maintenant, mettons à jour le contenu de calculator.html avec ces détails
+    $('#recipeNameDisplay').text(recipeName); // Supposons que vous avez un élément avec l'ID "recipeNameDisplay" pour afficher le nom de la recette
+
+    // Pour les ingrédients, vous pouvez les parcourir et les ajouter à un élément spécifique
+    const ingredientsContainer = $('#ingredientsDisplay'); // Supposons que vous avez un élément avec l'ID "ingredientsDisplay"
+    ingredients.split('<br>').forEach(ingredient => {
+        ingredientsContainer.append($('<p>').text(ingredient));
+    });
+
+    // Si vous avez besoin de faire une autre requête API pour obtenir plus de détails, vous pouvez le faire ici
+    // Par exemple, pour obtenir les détails d'une recette par son nom, vous pouvez utiliser l'URL suivante :
+    const apiUrl = `https://www.themealdb.com/api/json/v1/1/search.php?s=${recipeName}`;
+    $.get(apiUrl, function(data) {
+        if (data && data.meals && data.meals[0]) {
+            const meal = data.meals[0];
+            // Utilisez les détails retournés par l'API comme vous le souhaitez
+            // Par exemple, pour afficher une image de la recette :
+            $('#recipeImageDisplay').attr('src', meal.strMealThumb); // Supposons que vous avez un élément img avec l'ID "recipeImageDisplay"
+>>>>>>> 8ef7970 (resolution merge)
         }
+    });
+}
+
+// Appeler la fonction lors du chargement de la page
+$(document).ready(function() {
+    loadRecipeDetails();
+});
+
     });
 }
 
         // Affichez également la méthode de la recette.
         document.getElementById("methode").textContent = recette.methode;
-    });
+    })
+    ;
+   document.addEventListener('DOMContentLoaded', () => {
+    const selectedRecipe = JSON.parse(localStorage.getItem('selectedRecipe'));
+    
+    if (selectedRecipe) {
+        // Insérez le nom de la recette, les ingrédients et les quantités dans le tableau.
+        // Vous pouvez utiliser la méthode que vous préférez pour insérer les données dans le tableau.
+
+        // Exemple :
+        const table = document.getElementById('yourTableId');
+        selectedRecipe.ingredients.forEach(ingredient => {
+            const row = table.insertRow();
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+            cell1.textContent = ingredient.name;
+            cell2.textContent = ingredient.quantity;
+        });
+
+        // Supprimez selectedRecipe de localStorage après utilisation
+        localStorage.removeItem('selectedRecipe');
+    }
+    let recetteData = JSON.parse(localStorage.getItem("recette"));
+
+// Utilisez recetteData pour afficher les informations sur calculator.html.
+
+});
+
     </script>
 </body>
 </html>

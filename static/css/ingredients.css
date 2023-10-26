@@ -1,8 +1,17 @@
+* {
+    box-sizing: border-box;
+}
+html, body{
+    height: 100%;
+    margin: 0;
+
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  margin: 0;
-  padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 h2 {
@@ -28,25 +37,24 @@ table {
 
 th, td {
   border: 1px solid #ccc;
-  padding: 10px;
+  padding: 15px;
   text-align: left;
 }
 
 th {
   background-color: #108397;
   color: #fff;
+  font-weight: 500; /* Gras pour les en-têtes */
 }
 
-tr:nth-child(even) {
-  background-color: #f2f2f2;
+tr:hover {
+    background-color: #f5f5f5; /* Un effet de survol plus subtil */
 }
 
-.saveIcon, .editIcon, .deleteIcon {
-  cursor: pointer;
-  margin-right: 5px;
-  color: #333;
-  transition: transform 0.3s ease;
+.saveIcon:hover, .editIcon:hover, .deleteIcon:hover {
+    transform: scale(1.2) translateY(-3px); /* Effet de levage en plus de l'agrandissement */
 }
+
 
 .saveIcon:hover {
   color: #00FFFF;
@@ -65,7 +73,19 @@ tr:nth-child(even) {
 .content {
   /* Styles spécifiques pour le contenu de ingredients.html */
   width: 80%; /* Ajustez la largeur du contenu selon vos préférences */
+  margin-left: 10%;
   padding: 20px; /* Espacement autour du contenu */
   background-color: #fff; /* Fond du contenu */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre autour du contenu */
 }
+
+
+.content {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+

@@ -32,5 +32,6 @@
             "name": "portfolio"
         }
     ],
-    "python.pythonPath": "myenv/bin/python3"
+    "python.pythonPath": "/opt/homebrew/bin/python3",
+    "editor.wordBasedSuggestions": true
 }

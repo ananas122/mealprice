@@ -224,7 +224,7 @@
 }
 .home-section{
   position: relative;
-  background: #E4E9F7;
+  background: #ffff;
   min-height: 100vh;
   top: 0;
   left: 78px;
@@ -248,3 +248,16 @@
     display: none;
   }
 }
+#content-container {
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar:not(.collapsed) + #content-container {
+  margin-left: 200px; /* Ajustez selon la largeur de votre sidebar */
+}
+
+.sidebar.collapsed + #content-container {
+  margin-left: 50px; /* Ajustez selon la largeur de votre sidebar rétractée */
+}
+
+

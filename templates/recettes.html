@@ -1,13 +1,65 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>Recette</title>
+    <title>recettes</title>
+    <!-- CSS pour Font Awesome, Dashboard et Boxicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="static/css/dashboard.css">
-    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
-
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet"/>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- FullCalendar CSS et JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js"></script>
     <style>
+        #recipeImages {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+#recipeImages img {
+    max-width: 200px;
+    height: auto;
+}
+.recette-container {
+    display: flex;
+    justify-content: flex-start; /* Aligner le contenu horizontalement à gauche */
+    align-items: flex-start;     /* Aligner le contenu verticalement en haut */
+}
+
+
+.recette-image {
+    margin-right: 40px;  /* Ajout d'une marge à droite pour espacer l'image principale des ingrédients */
+    order: 0; /* Assurez-vous que l'image de la recette est la première */
+}
+
+.recette-ingredients img {
+    /* ajoutez du style pour les images des ingrédients si nécessaire */
+}
+.recette-ingredients {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Aligner les images des ingrédients au début (gauche) */
+    gap: 20px;
+}
+        .ingredient-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .ingredient-img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .ingredient-quantity {
+            margin-top: 5px;
+            text-align: center;
+        }
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -46,149 +98,161 @@
             align-items: center;
             margin-bottom: 10px;
         }
-
-        .ingredient-image {
-            margin-right: 10px;
-            vertical-align: middle;
-        }
-
-        .ingredient input {
-            margin-right: 10px;
-        }
-
-        #addIngredientBtn {
-            margin-top: 10px;
-        }
-
-        #recipeImages {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        #recipeImages img {
-            max-width: 100px;
-            height: auto;
-            border-radius: 5px;
-        }
-
-        .ingredient-img {
-            max-width: 50px;
-            margin-right: 10px;
-        }
     </style>
 </head>
 
 <body>
-    <header>
-        <h1>Look a Recipe</h1>
-    </header>
+<img src="static/images/receipt.png" alt="banniere recettes">
+<header>
+    <h1>Look a Recipe</h1>
+</header>
+
+<h1>Cuisine pour tous</h1>
+
     <div class="container">
-        <h1>Cuisine pour tous</h1>
-        <a href="/calculator.html" id="calculator-link-from-recettes">Aller vers Calculatrice</a>
-        <div class="container">
-            <h1>Cuisine pour tous</h1>
-            <input type="text" placeholder="Entrez le nom d'une recette" id="searchInput">
-            <button id="searchRecipe">Rechercher</button>
-            <div id="results">
-                Entrez le nom d'une recette pour commencer la recherche.
-            </div>
-            <div id="recipeDetails" style="display: none;">
-                <h2>Détails de la recette</h2>
-                <div id="recipeName"></div>
-                <div id="recipeIngredients"></div>
-                <div id="recipeInstructions"></div>
-                <div id="recipeImages"></div>
-            </div>
+        <input type="text" placeholder="Entrez le nom d'une recette" id="searchInput">
+        <button id="searchRecipe">Rechercher</button>
+        <div id="results">
+            Entrez le nom d'une recette pour commencer la recherche.
+        </div>
+        <div id="recipeDetails" style="display: none;">
+            <h2>Détails de la recette</h2>
+            <div id="recipeName"></div>
+            <div id="recipeIngredients"></div>
+            <div id="recipeInstructions"></div>
+            <div id="recipeImages"></div>
+            <button type="submit" id="goToCalculatorButton">Sélectionner cette recette</button>
+            <a href="/calculator.html" id="calculator-link-from-recettes">Aller vers Calculatrice</a>
         </div>
     </div>
 
-    <script>
-        const searchInput = document.getElementById("searchInput");
-        const searchRecipeBtn = document.getElementById("searchRecipe");
-        const results = document.getElementById("results");
-        const recipeDetails = document.getElementById("recipeDetails");
-        const recipeName = document.getElementById("recipeName");
-        const recipeIngredients = document.getElementById("recipeIngredients");
-        const recipeInstructions = document.getElementById("recipeInstructions");
-        const recipeImages = document.getElementById("recipeImages");
+</div>
 
-        const searchRecipe = async () => {
-            const searchQuery = searchInput.value.trim();
-            if (searchQuery === "") {
-                results.innerHTML = "Entrez le nom d'une recette pour commencer la recherche.";
-                return;
+<script>
+    const searchInput = document.getElementById("searchInput");
+    const searchRecipeBtn = document.getElementById("searchRecipe");
+    const results = document.getElementById("results");
+    const recipeDetails = document.getElementById("recipeDetails");
+    const recipeName = document.getElementById("recipeName");
+    const recipeIngredients = document.getElementById("recipeIngredients");
+    const recipeInstructions = document.getElementById("recipeInstructions");
+    const recipeImages = document.getElementById("recipeImages");
+
+    let selectedRecipe = null;
+
+    const searchRecipe = async () => {
+        const searchQuery = searchInput.value.trim();
+        if (searchQuery === "") {
+            results.innerHTML = "Entrez le nom d'une recette pour commencer la recherche.";
+            return;
+        }
+        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`);
+        const data = await response.json();
+        if (data.meals) {
+            results.innerHTML = "";
+            data.meals.forEach((meal) => {
+                const recipeItem = document.createElement("div");
+                recipeItem.classList.add("recipe-item");
+                recipeItem.innerHTML = `<h3>${meal.strMeal}</h3>`;
+                recipeItem.addEventListener("click", () => showRecipeDetails(meal.idMeal));
+                results.appendChild(recipeItem);
+            });
+        } else {
+            results.innerHTML = "Aucun résultat trouvé.";
+        }
+    };
+
+    const showRecipeDetails = async (recipeId) => {
+        recipeImages.innerHTML = '';
+        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`);
+        const data = await response.json();
+
+        if (data.meals && data.meals[0]) {
+            const meal = data.meals[0];
+            recipeName.textContent = meal.strMeal;
+            recipeIngredients.innerHTML = `<h4>Ingrédients:</h4> ${getIngredientsList(meal)}`;
+            recipeInstructions.innerHTML = `<h4>Instructions:</h4> ${meal.strInstructions}`;
+
+            const recipeImage = document.createElement("img");
+            recipeImage.src = meal.strMealThumb;
+            recipeImages.appendChild(recipeImage);
+
+            const ingredientsElements = getIngredientsImages(meal);
+            ingredientsElements.forEach((ingredientElement) => {
+                recipeImages.appendChild(ingredientElement);
+            });
+
+            recipeDetails.style.display = "block";
+            selectedRecipe = {
+                name: meal.strMeal,
+                ingredients: getIngredientsList(meal),
+                instructions: meal.strInstructions
+            };
+        }
+    };
+
+    const getIngredientsImages = (meal) => {
+        const ingredientsElements = [];
+        for (let i = 1; i <= 20; i++) {
+            if (meal[`strIngredient${i}`] && meal[`strMeasure${i}`]) {
+                const ingredientName = meal[`strIngredient${i}`];
+                const ingredientContainer = document.createElement("div");
+                ingredientContainer.classList.add("ingredient-container");
+
+                const ingredientImage = document.createElement("img");
+                ingredientImage.src = `https://www.themealdb.com/images/ingredients/${ingredientName}.png`;
+                ingredientImage.classList.add("ingredient-img");
+                ingredientContainer.appendChild(ingredientImage);
+
+                const ingredientQuantity = document.createElement("span");
+                ingredientQuantity.classList.add("ingredient-quantity");
+                ingredientQuantity.textContent = meal[`strMeasure${i}`];
+                ingredientContainer.appendChild(ingredientQuantity);
+
+                ingredientsElements.push(ingredientContainer);
             }
-            const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`);
-            const data = await response.json();
-            if (data.meals) {
-                results.innerHTML = "";
-                data.meals.forEach((meal) => {
-                    const recipeItem = document.createElement("div");
-                    recipeItem.classList.add("recipe-item");
-                    recipeItem.innerHTML = `<h3>${meal.strMeal}</h3>`;
-                    recipeItem.addEventListener("click", () => showRecipeDetails(meal.idMeal));
-                    results.appendChild(recipeItem);
-                });
-            } else {
-                results.innerHTML = "Aucun résultat trouvé.";
+        }
+        return ingredientsElements;
+    };
+
+    const getIngredientsList = (meal) => {
+        let ingredientsList = "";
+        for (let i = 1; i <= 20; i++) {
+            if (meal[`strIngredient${i}`]) {
+                ingredientsList += `${meal[`strIngredient${i}`]}: ${meal[`strMeasure${i}`]}<br>`;
             }
-        };
+        }
+        return ingredientsList;
+    };
 
-        const showRecipeDetails = async (recipeId) => {
-            recipeImages.innerHTML = '';
-            const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`);
-            const data = await response.json();
+    searchRecipeBtn.addEventListener("click", searchRecipe);
 
-            if (data.meals && data.meals[0]) {
-                const meal = data.meals[0];
-                recipeName.textContent = meal.strMeal;
-                recipeIngredients.innerHTML = `<h4>Ingrédients:</h4> ${getIngredientsList(meal)}`;
-                recipeInstructions.innerHTML = `<h4>Instructions:</h4> ${meal.strInstructions}`;
 
-                const recipeImage = document.createElement("img");
-                recipeImage.src = meal.strMealThumb;
-                recipeImages.appendChild(recipeImage);
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.getElementById('selectRecipeButton').addEventListener('click', function() {
+        const selectedRecipe = document.getElementById('recipeSelect').value;
+        if (selectedRecipe) {
+            window.localStorage.setItem('selectedRecipe', selectedRecipe);
+            window.location.href = 'calculator.html';
+        }
+    });
+    function selectRecipe(id) {
+    //  fonction qui récupère les détails de la recette via l'API
+        const recipeDetails = getRecipe(id);
+    
+    // Stockez les informations nécessaires dans localStorage
+        localStorage.setItem('selectedRecipe', JSON.stringify(recipeDetails));
+    
+    // Redirigez vers calculator.html
+        $("#monBouton").click(function() {
+            window.location.href = "/calculator.html";
+});
+}
+history.pushState(null, "", "/calculator.html");
 
-                const ingredientsImages = getIngredientsImages(meal);
-                ingredientsImages.forEach((ingredientImage) => {
-                    recipeImages.appendChild(ingredientImage);
-                });
 
-                recipeDetails.style.display = "block";
-            }
-        };
+});
 
-        const getIngredientsImages = (meal) => {
-            const ingredientsImages = [];
-            for (let i = 1; i <= 20; i++) {
-                if (meal[`strIngredient${i}`]) {
-                    const ingredientName = meal[`strIngredient${i}`];
-                    const ingredientImage = document.createElement("img");
-                    ingredientImage.src = `https://www.themealdb.com/images/ingredients/${ingredientName}.png`;
-                    ingredientImage.classList.add("ingredient-img");
-                    ingredientsImages.push(ingredientImage);
-                } else {
-                    break;
-                }
-            }
-            return ingredientsImages;
-        };
-
-        const getIngredientsList = (meal) => {
-            let ingredientsList = "";
-            for (let i = 1; i <= 20; i++) {
-                if (meal[`strIngredient${i}`]) {
-                    ingredientsList += `${meal[`strIngredient${i}`]}: ${meal[`strMeasure${i}`]}<br>`;
-                } else {
-                    break;
-                }
-            }
-            return ingredientsList;
-        };
-
-        searchRecipeBtn.addEventListener("click", searchRecipe);
-    </script>
+</script>
 </body>
-
 </html>
