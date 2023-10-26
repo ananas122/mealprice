@@ -299,24 +299,6 @@ if (recette) {
     tableauCalculator.appendChild(nouvelleLigne);
 }
 
-<<<<<<< HEAD
-function loadRecipeDetails(recipe_id) {
-    $.ajax({
-        url: `/api/recipe_details/${recipe_id}`,
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            // ingrédients soient stockés dans une chaîne JSON dans la colonne 'ingredients' de la base de donnees
-            let ingredients = JSON.parse(data.ingredients);
-
-            // Parcourez les ingrédients et ajoutez-les au tableau
-            ingredients.forEach(function(ingredient) {
-                // Ajoutez chaque ingrédient au tableau de calculator.html
-            });
-        },
-        error: function(error) {
-            console.log("Erreur lors de la récupération des détails de la recette:", error);
-=======
 function loadRecipeDetails() {
     // Récupérer la recette sélectionnée depuis le localStorage
     const selectedRecipe = JSON.parse(localStorage.getItem('selectedRecipe'));
@@ -349,7 +331,6 @@ function loadRecipeDetails() {
             // Utilisez les détails retournés par l'API comme vous le souhaitez
             // Par exemple, pour afficher une image de la recette :
             $('#recipeImageDisplay').attr('src', meal.strMealThumb); // Supposons que vous avez un élément img avec l'ID "recipeImageDisplay"
->>>>>>> 8ef7970 (resolution merge)
         }
     });
 }
