@@ -348,9 +348,8 @@ $(document).ready(function() {
     
     if (selectedRecipe) {
         // Insérez le nom de la recette, les ingrédients et les quantités dans le tableau.
-        // Vous pouvez utiliser la méthode que vous préférez pour insérer les données dans le tableau.
 
-        // Exemple :
+    
         const table = document.getElementById('yourTableId');
         selectedRecipe.ingredients.forEach(ingredient => {
             const row = table.insertRow();
