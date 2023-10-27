@@ -308,12 +308,12 @@ function loadRecipeDetails() {
         return;
     }
 
-    // Ici, vous pouvez extraire des détails tels que le nom de la recette, les ingrédients, etc.
+    // extraire des détails tels que le nom de la recette, les ingrédients, etc.
     const recipeName = selectedRecipe.name;
     const ingredients = selectedRecipe.ingredients;
     // ... et autres détails que vous pourriez avoir
 
-    // Maintenant, mettons à jour le contenu de calculator.html avec ces détails
+    // mis à jour su contenu de calculator.html avec ces détails
     $('#recipeNameDisplay').text(recipeName); // Supposons que vous avez un élément avec l'ID "recipeNameDisplay" pour afficher le nom de la recette
 
     // Pour les ingrédients, vous pouvez les parcourir et les ajouter à un élément spécifique
@@ -322,14 +322,10 @@ function loadRecipeDetails() {
         ingredientsContainer.append($('<p>').text(ingredient));
     });
 
-    // Si vous avez besoin de faire une autre requête API pour obtenir plus de détails, vous pouvez le faire ici
-    // Par exemple, pour obtenir les détails d'une recette par son nom, vous pouvez utiliser l'URL suivante :
     const apiUrl = `https://www.themealdb.com/api/json/v1/1/search.php?s=${recipeName}`;
     $.get(apiUrl, function(data) {
         if (data && data.meals && data.meals[0]) {
             const meal = data.meals[0];
-            // Utilisez les détails retournés par l'API comme vous le souhaitez
-            // Par exemple, pour afficher une image de la recette :
             $('#recipeImageDisplay').attr('src', meal.strMealThumb); // Supposons que vous avez un élément img avec l'ID "recipeImageDisplay"
         }
     });
