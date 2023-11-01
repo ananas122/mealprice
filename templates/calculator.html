@@ -5,14 +5,14 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- Inclure les liens vers les fichiers CSS de la barre latérale et des ingrédients -->
   <link rel="stylesheet" href="static/css/dashboard.css">
-  
+
   <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
 <body>
   <h2>Calculator</h2>
-  
+
   <div id="sidebar">
     <!-- Contenu de la barre latérale depuis dashboard.css -->
   </div>
@@ -103,14 +103,7 @@ p {
                 </tr>
                 <tr id="row_1" class="ingred-row">
                     <td colspan="2">
-                        <select name="f_ingredients_1">
-                            <option value="">Sélectionnez un ingrédient</option>
-                            <!-- Ajoutez ici des options pour chaque ingrédient avec leur nom -->
-                            <option value="Ingrédient 1">Ingrédient 1</option>
-                            <option value="Ingrédient 2">Ingrédient 2</option>
-                            <option value="Ingrédient 3">Ingrédient 3</option>
-                            <!-- Ajoutez d'autres ingrédients ici -->
-                        </select>
+                        <input type="text" name="f_ingredients_1" placeholder="Nom de l'ingrédient">
                     </td>
                     <td>
                         <input type="number" step="any" name="f_quantity_1" placeholder="g / mL / each" min="0" data-row-qty>
@@ -135,6 +128,27 @@ p {
         <button type="button" data-add>+ Ajouter un ingrédient supplémentaire</button>
         <button type="submit">Envoyer</button>
     </form>
+<!-- ... autres balises HTML ... -->
+<div>
+    <ul>
+    {% for ingredient in recipe.ingredients %}
+      <li>{{ ingredient }}</li>
+    {% endfor %}
+    </ul>
+    <h1>Recette Sélectionnée</h1>
+
+<ul>
+<h1>{{ recipe.recipe_name }}</h1>
+<ul>
+{% for ingredient in recipe.ingredients %}
+    <li>{{ ingredient.strip() }}</li>
+{% endfor %}
+</ul>
+<p>{{ recipe.instructions }}</p>
+
+
+</div>
+<!-- ... autres balises HTML ... -->
 
     <script>
     let rowNumber = 1; // On commence avec une ligne
@@ -145,14 +159,7 @@ p {
         let newRow = `
         <tr id="row_${rowNumber}" class="ingred-row">
             <td colspan="2">
-                <select name="f_ingredients_${rowNumber}">
-                    <option value="">Sélectionnez un ingrédient</option>
-                    <!-- Ajoutez ici des options pour chaque ingrédient avec leur nom -->
-                    <option value="Ingrédient 1">Ingrédient 1</option>
-                    <option value="Ingrédient 2">Ingrédient 2</option>
-                    <option value="Ingrédient 3">Ingrédient 3</option>
-                    <!-- Ajoutez d'autres ingrédients ici -->
-                </select>
+                <input type="text" name="f_ingredients_${rowNumber}" placeholder="Nom de l'ingrédient">
             </td>
             <td>
                 <input type="number" step="any" name="f_quantity_${rowNumber}" min="0">
@@ -181,7 +188,7 @@ p {
                 <input type="text" name="f_total_${rowNumber}" placeholder="€0.00" readonly>
             </td>
         </tr>`;
-        
+
         let tbody = document.querySelector("tbody");
         tbody.insertAdjacentHTML('beforeend', newRow);
     });
@@ -244,130 +251,91 @@ p {
         // Mis à jour du coût total 
         document.getElementById("grandTotal").textContent = `€${grandTotal.toFixed(2)}`;
     }
-    $(document).ready(function() {
-    let recette = JSON.parse(localStorage.getItem("recette"));
 
-    if (recette) {
-        // Insertion du nom de la recette
-        $("#nomRecette").text(recette.nom);
+    // Charger les détails de la recette
+    // Fonction pour charger les détails de la recette depuis le stockage local
+    function loadRecipeDetails() {
+        const recipeDetails = JSON.parse(localStorage.getItem('recipeDetails'));
+        if (recipeDetails) {
+            document.getElementById("f_name").value = recipeDetails.name;
+            document.getElementById("method").value = recipeDetails.method;
 
-        // Insertion des ingrédients dans le tableau
-        recette.ingredients.forEach(function(ingredient) {
-            $("#tableauCalculator").append(`
-                <tr>
-                    <td>${ingredient.nom}</td>
-                    <td>${ingredient.quantite}</td>
-                </tr>
-            `);
-        });
-
-        // Insertion de la méthode
-        $("#methode").text(recette.methode);
+            recipeDetails.ingredients.forEach((ingredient, index) => {
+                if (index >= 1) {
+                    addNewRow();
+                }
+                document.querySelector(`[name="f_ingredients_${index+1}"]`).value = ingredient.name;
+                document.querySelector(`[name="f_quantity_${index+1}"]`).value = ingredient.quantity;
+                document.querySelector(`[name="f_cost_${index+1}"]`).value = ingredient.cost;
+                document.querySelector(`[name="f_used_${index+1}"]`).value = ingredient.used;
+            });
+        }
     }
+// Ajoutez des écouteurs d'événements pour ajouter des lignes, soumettre le formulaire, etc.
+    document.querySelector("button[type='button']").addEventListener('click', addNewRow);
+    document.getElementById("recipe-calculator-desktop").addEventListener('submit', function(event) {
+        event.preventDefault();
+        let recipeDetails = {
+        name: document.getElementById("f_name").value,
+        method: document.getElementById("method").value,
+        ingredients: []
+    };
+
+    for (let i = 1; i <= rowNumber; i++) {
+        let ingredient = {
+            name: document.querySelector(`[name="f_ingredients_${i}"]`).value,
+            quantity: document.querySelector(`[name="f_quantity_${i}"]`).value,
+            cost: document.querySelector(`[name="f_cost_${i}"]`).value,
+            used: document.querySelector(`[name="f_used_${i}"]`).value,
+        };
+        recipeDetails.ingredients.push(ingredient);
+    }
+
+    localStorage.setItem('recipeDetails', JSON.stringify(recipeDetails));
 });
-document.addEventListener('DOMContentLoaded', function() {
-    // Récupérer les données de la recette depuis le localStorage
-let recette = JSON.parse(localStorage.getItem("recette"));
+    // Appeler la fonction lors du chargement de la page
+    document.addEventListener('DOMContentLoaded', loadRecipeDetails);
 
-// Vérifier si des données de recette sont disponibles
-if (recette) {
-    // permission d accéder aux propriétés de la recette :
-    let nomRecette = recette.nom;
-    let ingredients = recette.ingredients;
-    let methode = recette.methode;
+    // Appeler la fonction lors de la soumission du formulaire
+    document.getElementById("recipe-calculator-desktop").addEventListener('submit', function(event) {
+        event.preventDefault();
+        calculateTotal();
+    })
+    // Récupérer les ingrédients sélectionnés depuis le stockage local
+const selectedIngredients = JSON.parse(localStorage.getItem("selectedIngredients"));
 
-    // insérez ces données dans le tableau de calculator.html
-    let tableauCalculator = document.getElementById("votre-identifiant-de-tableau");
-
-    //  afficher les données dans le tableau
-    let nomRecetteElement = document.createElement("td");
-    nomRecetteElement.textContent = nomRecette;
-
-    let ingredientsElement = document.createElement("td");
-    ingredientsElement.textContent = ingredients;
-
-    let methodeElement = document.createElement("td");
-    methodeElement.textContent = methode;
-
-    // Créez une nouvelle ligne dans le tableau
-    let nouvelleLigne = document.createElement("tr");
-    nouvelleLigne.appendChild(nomRecetteElement);
-    nouvelleLigne.appendChild(ingredientsElement);
-    nouvelleLigne.appendChild(methodeElement);
-
-    // Ajoutez la nouvelle ligne au tableau
-    tableauCalculator.appendChild(nouvelleLigne);
+// Utiliser les ingrédients sélectionnés pour effectuer les calculs nécessaires
+if (selectedIngredients) {
+    for (const ingredient of selectedIngredients) {
+        const newRow = $("<tr>");
+        newRow.append('<td><i class="fas fa-edit editIcon"></i> <i class="fas fa-trash-alt deleteIcon"></i></td>');
+        newRow.append(`<td>${ingredient.name}</td>`);
+        newRow.append(`<td>${ingredient.unit_cost}</td>`);
+        newRow.append(`<td>${ingredient.stock_quantity}</td>`);
+        $("#ingredientTable tbody").append(newRow);
+    }
 }
 
-function loadRecipeDetails() {
-    // Récupérer la recette sélectionnée depuis le localStorage
-    const selectedRecipe = JSON.parse(localStorage.getItem('selectedRecipe'));
+// Effacer les ingrédients sélectionnés du stockage local après les avoir utilisés
+localStorage.removeItem("selectedIngredients");
 
-    if (!selectedRecipe) {
-        console.error("Aucune recette sélectionnée !");
-        return;
-    }
 
-    // extraire des détails tels que le nom de la recette, les ingrédients, etc.
-    const recipeName = selectedRecipe.name;
-    const ingredients = selectedRecipe.ingredients;
-    // ... et autres détails que vous pourriez avoir
-
-    // mis à jour su contenu de calculator.html avec ces détails
-    $('#recipeNameDisplay').text(recipeName); // Supposons que vous avez un élément avec l'ID "recipeNameDisplay" pour afficher le nom de la recette
-
-    // Pour les ingrédients, vous pouvez les parcourir et les ajouter à un élément spécifique
-    const ingredientsContainer = $('#ingredientsDisplay'); // Supposons que vous avez un élément avec l'ID "ingredientsDisplay"
-    ingredients.split('<br>').forEach(ingredient => {
-        ingredientsContainer.append($('<p>').text(ingredient));
-    });
-
-    const apiUrl = `https://www.themealdb.com/api/json/v1/1/search.php?s=${recipeName}`;
-    $.get(apiUrl, function(data) {
-        if (data && data.meals && data.meals[0]) {
-            const meal = data.meals[0];
-            $('#recipeImageDisplay').attr('src', meal.strMealThumb); // Supposons que vous avez un élément img avec l'ID "recipeImageDisplay"
+    document.addEventListener('DOMContentLoaded', async () => {
+        const response = await fetch('/get_selected_recipe');
+        if (response.ok) {
+            const recipe = await response.json();
+            // Utilisez les données de la recette ici pour les afficher sur la page
+            // par exemple :
+            document.getElementById('recipe-name').textContent = recipe.name;
+            document.getElementById('recipe-ingredients').innerHTML = recipe.ingredients.map(
+                ingredient => `<li>${ingredient}</li>`
+            ).join('');
+        } else {
+            console.error('Failed to fetch recipe:', response.statusText);
         }
     });
-}
-
-// Appeler la fonction lors du chargement de la page
-$(document).ready(function() {
-    loadRecipeDetails();
-});
-
-    });
-}
-
-        // Affichez également la méthode de la recette.
-        document.getElementById("methode").textContent = recette.methode;
-    })
-    ;
-   document.addEventListener('DOMContentLoaded', () => {
-    const selectedRecipe = JSON.parse(localStorage.getItem('selectedRecipe'));
+</script>
+ 
     
-    if (selectedRecipe) {
-        // Insérez le nom de la recette, les ingrédients et les quantités dans le tableau.
-
-    
-        const table = document.getElementById('yourTableId');
-        selectedRecipe.ingredients.forEach(ingredient => {
-            const row = table.insertRow();
-            const cell1 = row.insertCell(0);
-            const cell2 = row.insertCell(1);
-            cell1.textContent = ingredient.name;
-            cell2.textContent = ingredient.quantity;
-        });
-
-        // Supprimez selectedRecipe de localStorage après utilisation
-        localStorage.removeItem('selectedRecipe');
-    }
-    let recetteData = JSON.parse(localStorage.getItem("recette"));
-
-// Utilisez recetteData pour afficher les informations sur calculator.html.
-
-});
-
-    </script>
 </body>
 </html>
