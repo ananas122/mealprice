@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ingrédients</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Inclure les liens vers les fichiers CSS de la barre latérale et des ingrédients -->
+    <link rel="stylesheet" href="static/css/dashboard.css" />
+    <link rel="stylesheet" href="static/css/ingredients.css" />
+
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+</head>
+<body>
+    <img src="static/images/igrd.png" alt="banniere ingredients">
+
+    <h2>Ingrédients</h2>
+
+    <div class="sidebar">
+        <!-- Contenu de la barre latérale depuis dashboard.css -->
+    </div>
+    <div id="content-container">
+        <!-- Contenu de la page Ingrédients -->
+
+        <div class="search-filter">
+            <input type="text" id="searchName" placeholder="Nom de l'ingrédient" />
+            <button id="searchIngredient">Rechercher</button>
+        </div>
+        <div class="add-modify">
+            <input type="text" id="ingredient" placeholder="Nom de l'ingrédient" />
+            <select id="category">
+                <option value="">Sélectionnez une catégorie</option>
+                <option value="Épices">Épices</option>
+                <option value="Légumes">Légumes</option>
+                <option value="Fruits">Fruits</option>
+                <option value="Autres">Autres</option>
+            </select>
+            <input type="number" id="unit_cost" placeholder="Coût unitaire" />
+            <input type="number" id="stock_quantity" placeholder="Quantité en stock" />
+            <button id="addIngredient">Ajouter</button>
+            <button id="updateIngredient">Modifier</button>
+        </div>
+        <table id="ingredientTable">
+            <thead>
+                <tr>
+                    <th>Actions</th>
+                    <th>Photos</th>
+                    <th>Nom</th>
+                    <th>Catégorie</th>
+                    <th>Coût unitaire</th>
+                    <th>Quantité en stock</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        // Déclaration des constantes et des fonctions globales
+        const ingredientTable = $("#ingredientTable tbody");
+        const apiKey = "6820604bd3a44f849de0112f112d822e";
+
+        function fetchIngredientsByName(name) {
+            fetch(`https://api.spoonacular.com/food/products/search?query=${name}&apiKey=${apiKey}`)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Réponse de réseau non ok");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log('Réponse de l\'API:', data);
+                    const ingredients = data.products;
+                    populateTable(ingredients);
+                })
+                .catch((error) => {
+                    console.error("Erreur:", error);
+                });
+        }
+
+        function populateTable(ingredients) {
+            ingredientTable.empty();
+            for (const ingredient of ingredients) {
+                const newRow = $("<tr>");
+                newRow.append('<td><i class="fas fa-edit editIcon"></i> <i class="fas fa-trash-alt deleteIcon"></i></td>');
+                newRow.append(`<td><img src="${ingredient.image}" alt="${ingredient.title}" onerror="this.onerror=null;this.src='static/images/no-image.jpg';"></td>`);
+                newRow.append(`<td>${ingredient.title}</td>`);
+                newRow.append(`<td>${ingredient.aisle}</td>`);
+                newRow.append(`<td>${ingredient.price}</td>`);
+                newRow.append(`<td>${ingredient.stock}</td>`);
+                ingredientTable.append(newRow);
+            }
+        }
+
+        // Gérer la recherche d'ingrédients
+        $("#searchIngredient").click(function () {
+            const name = $("#searchName").val();
+            fetchIngredientsByName(name);
+        });
+
+        // Gérer la modification d'un ingrédient
+        $(document).on("click", ".editIcon", function () {
+            const row = $(this).closest("tr");
+            const name = row.find("td:eq(2)").text();
+            const category = row.find("td:eq(3)").text();
+            const unit_cost = row.find("td:eq(4)").text();
+            const stock_quantity = row.find("td:eq(5)").text();
+
+            $("#ingredient").val(name);
+            $("#category").val(category);
+            $("#unit_cost").val(unit_cost);
+            $("#stock_quantity").val(stock_quantity);
+
+            // Marquer la ligne comme sélectionnée
+            row.addClass("selected");
+        });
+
+        // Gérer la suppression d'un ingrédient
+        $(document).on("click", ".deleteIcon", function () {
+            const row = $(this).closest("tr");
+            row.remove();
+        });
+
+        // Ajouter un ingrédient
+        $("#addIngredient").click(function () {
+            const name = $("#ingredient").val();
+            const category = $("#category").val();
+            const unit_cost = $("#unit_cost").val();
+            const stock_quantity = $("#stock_quantity").val();
+
+            const newRow = $("<tr>");
+            newRow.append('<td><i class="fas fa-edit editIcon"></i> <i class="fas fa-trash-alt deleteIcon"></i></td>');
+            newRow.append(`<td>${name}</td>`);
+            newRow.append(`<td>${category}</td>`);
+            newRow.append(`<td>${unit_cost}</td>`);
+            newRow.append(`<td>${stock_quantity}</td>`);
+            ingredientTable.append(newRow);
+
+            // Réinitialiser les champs du formulaire
+            $("#ingredient").val("");
+            $("#category").val("");
+            $("#unit_cost").val("");
+            $("#stock_quantity").val("");
+        });
+
+        // Modifier un ingrédient
+        $("#updateIngredient").click(function () {
+            const selectedRow = ingredientTable.find("tr.selected");
+            if (selectedRow.length === 1) {
+                const name = $("#ingredient").val();
+                const category = $("#category").val();
+                const unit_cost = $("#unit_cost").val();
+                const stock_quantity = $("#stock_quantity").val();
+
+                selectedRow.find("td:eq(2)").text(name);
+                selectedRow.find("td:eq(3)").text(category);
+                selectedRow.find("td:eq(4)").text(unit_cost);
+                selectedRow.find("td:eq(5)").text(stock_quantity);
+
+                // Réinitialiser les champs du formulaire
+                $("#ingredient").val("");
+                $("#category").val("");
+                $("#unit_cost").val("");
+                $("#stock_quantity").val("");
+
+                // Désélectionner la ligne
+                selectedRow.removeClass("selected");
+            } else {
+                alert("Veuillez sélectionner une ligne à modifier en cliquant sur l'icône de modification.");
+            }
+        });
+    </script>
+</body>
+</html>

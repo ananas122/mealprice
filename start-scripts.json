@@ -1,0 +1,10 @@
+{
+    "scripts": {
+      "app": "python app.py",
+      "oauth": "python oauth.py"
+    },
+    "devDependencies": {
+      "concurrently": "^7.0.0"
+    }
+  }
+  

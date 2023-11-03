@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>MealPrice recette </title>
+   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dashboard.css') }}">
+
+
+</head>
+
+<body>
+    <header>
+        <img src="static/images/logo.png" alt="logo">
+        <h1 id="site-title">MealPrice</h1>
+        <p id="site-description">La recette de vos économies!</p>
+    </header>
+
+    <nav>
+       <!--   -->   <ul>
+     <li><a href="/">Accueil</a></li>
+            <li><a href="/ingredients">Ingrédients</a></li>
+            <li><a href="/recettes">Recettes</a></li>
+            <li><a href="/calendar">Calendar</a></li>
+            <li><a href="/stocks">Stocks</a></li>
+            <li><a href="/calculator">Calculator</a></li>
+            <li><a href="/dashboard">dashboard</a></li>
+        </ul>   -->
+        
+    </nav>
+
+    <main>
+        <!--  <section class="content"> -->
+    <section class="connexion-section">
+        <h1><strong>Se connecter</strong></h1>
+        <button id="loginBtn">Login</button> <button id="signupBtn">Sign Up</button> <button id="gmailLoginBtn">Login with Gmail</button> 
+        <button id="facebookLoginBtn">Login with Facebook</button>
+    </section>
+    </main>
+   {% block content %} {% endblock%}
+    <footer>
+                <div class="footer-content">
+        
+                  <ul>
+                    <li><a href="#">À propos</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
+                    
+                  </ul>
+                </div>
+                <div class="footer-bottom">
+                  <p>&copy; 2023 Votre entreprise. Tous droits réservés.</p>
+                </div>
+              
+    </footer>
+</body>
+
+</html>

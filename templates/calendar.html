@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Menu Planning </title>
+  <!-- CSS pour Font Awesome, Dashboard et Boxicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="static/css/dashboard.css">
+  <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+  
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- FullCalendar CSS et JS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js"></script>
+
+</head>
+<body>
+<img src="static/images/calendar.png" alt="banniere calendrier">
+
+  <h2>calendar</h2>
+  <div class="sidebar">
+    <!-- Contenu de la barre latérale depuis dashboard.css -->
+  </div>
+
+  <h3>Menu planning</h3>
+  <div id='calendar'></div>
+  <div>
+    <button onclick="ouvrirDialogue()">Ajouter</button>
+    <button onclick="supprimerEvenement()">Supprimer un événement</button>
+    <button onclick="sauvegarderEvenements()">Sauvegarder</button>
+
+  </div>
+
+  <div id="dialogueBox" style="display:none;">
+    <ul>
+      <li><input type="checkbox" id="diner" value="Dîner"> <label for="diner">Dîner</label></li>
+      <li><input type="checkbox" id="breakfast" value="Breakfast"> <label for="breakfast">Breakfast</label></li>
+      <li><input type="checkbox" id="Birthday" value="Birthday"> <label for="Birthday">Birthday</label></li>
+
+       <li><input type="time" id="heureDebut"></li>
+    <input type="text" id="rechercheRecette" placeholder="Rechercher une recette...">
+ </ul>
+    <button onclick="rechercher()">Rechercher</button>
+    <button onclick="ajouterEvenement()">Ajouter</button>
+  </div>
+
+  <script>
+// Variable globale pour stocker la recette sélectionnée
+var recetteSelectionnee = null;
+var calendar;
+console.log("Script commencé"); // Log initial pour vérifier que le script s'exécute
+
+// Fonction asynchrone pour obtenir la première recette correspondant à une recherche
+async function getSearched(name) {
+  const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=6820604bd3a44f849de0112f112d822e&query=${name}`);
+  const recipes = await data.json();
+  return recipes.results[0]?.title || 'Recette non trouvée';
+}
+
+// Fonction asynchrone pour effectuer une recherche de recette
+async function rechercher() {
+  const query = document.getElementById('rechercheRecette').value;
+  recetteSelectionnee = await getSearched(query);
+  alert("Recette trouvée: " + recetteSelectionnee);
+}
+
+// Fonction pour ouvrir la boîte de dialogue
+function ouvrirDialogue(info) {
+  console.log("Ouverture de la boîte de dialogue"); // Log pour l'ouverture de la boîte de dialogue
+  document.getElementById("dialogueBox").style.display = "block";
+  if (info && info.startStr) {
+    document.getElementById("dialogueBox").setAttribute("data-start", info.startStr);
+  } else {
+    document.getElementById("dialogueBox").removeAttribute("data-start");
+  }
+}
+
+// Fonction asynchrone pour ajouter un événement
+async function ajouterEvenement() {
+  console.log("Ajout d'un événement"); // Log pour l'ajout d'un événement
+
+  const startDate = document.getElementById("dialogueBox").getAttribute("data-start");
+  if (!startDate) {
+  console.error("startDate est null ou non défini");
+  return;
+}
+
+  const heureDebut = document.getElementById("heureDebut").value;
+  const [annee, mois, jour] = startDate.split('-');
+  const [heure, minutes] = heureDebut.split(':');
+  const startDateTime = new Date(annee, mois - 1, jour, heure, minutes);
+
+  const checkboxes = document.querySelectorAll('#dialogueBox input[type="checkbox"]:checked');
+  for (let checkbox of checkboxes) {
+    const typeEvenement = checkbox.value;
+    const recetteTitle = recetteSelectionnee || await getSearched(typeEvenement);
+    calendar.addEvent({
+      title: `${typeEvenement} - ${recetteTitle}`,
+      start: startDateTime,
+      allDay: false
+    });
+  }
+  document.getElementById("dialogueBox").style.display = "none";
+}
+
+// Fonction pour supprimer le premier événement
+function supprimerEvenement() {
+  console.log("Suppression du premier événement"); // Log pour la suppression d'un événement
+
+  const premierEvenement = calendar.getEvents()[0];
+  if (premierEvenement) {
+    premierEvenement.remove();
+  }
+}
+
+// Fonction asynchrone pour sauvegarder les événements
+async function sauvegarderEvenements() {
+  console.log("Sauvegarde des événements"); // Log pour la sauvegarde des événements
+
+  const evenements = calendar.getEvents();
+  for (let event of evenements) {
+    const titre = event.title;
+    const debut = event.start.toISOString();
+    await fetch('/save_event', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ title: titre, start_datetime: debut }),
+    });
+  }
+  alert('Événements sauvegardés');
+}
+async function loadEvents() {
+  const res = await fetch('/get_events');
+  const events = await res.json();
+  
+  // Ajouter ces événements au calendrier
+  for (let event of events) {
+    calendar.addEvent({
+      title: event.title,
+      start: new Date(event.start_datetime),
+      allDay: false
+    });
+  }
+}
+
+
+// Initialisation du calendrier FullCalendar
+$(document).ready(function() {
+  console.log("Document prêt"); // Log pour vérifier que le document est prêt
+
+  var calendarEl = document.getElementById('calendar');
+  calendar = new FullCalendar.Calendar(calendarEl, {
+    selectable: true,
+    select: ouvrirDialogue,
+    eventClick: function(info) {
+      alert('Événement cliqué: ' + info.event.title + ' à ' + info.event.start.toTimeString());
+    }
+  });
+  calendar.render();
+
+ loadEvents();
+});
+
+</script>
+</body>
+</html>
