@@ -1,6 +1,6 @@
 import uuid
 from werkzeug.security import check_password_hash
-from flask import Flask, render_template, redirect, request, jsonify, make_response, session
+from flask import Flask, render_template, redirect, request, jsonify, make_response, session, send_from_directory
 from flask_restful import Api, Resource
 from flask_mysqldb import MySQL
 from datetime import datetime
@@ -64,7 +64,7 @@ def add_ingredient():
     return 'Ingrédient ajouté avec succès', 201
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/main_page', methods=['GET', 'POST'])
 def main_page():
     if request.method == 'POST':
         form_name = request.form.get('form_name')
@@ -106,6 +106,10 @@ def index1():
     return render_template('index1.html')
 
 
+@app.route('/')
+def index():
+    return send_from_directory('.', 'index.html')
+    
 @app.route('/recettes')
 def recettes():
     return render_template('recettes.html')
@@ -250,19 +254,6 @@ def save_event():
     cur.close()
 
     return 'Événement sauvegardé', 201
-
-
-@app.route('/get_product_image', methods=['GET'])
-def get_product_image():
-    barcode = request.args.get('barcode')
-    if not barcode:
-        return "Veuillez fournir un code-barres", 400
-
-    product_data = food_api.fetch_product(barcode)
-    if not product_data or 'image_url' not in product_data:
-        return "Produit non trouvé ou image indisponible", 404
-
-    return product_data['image_url'], 200
 
 
 if __name__ == '__main__':
