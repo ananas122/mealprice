@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="img-src 'self' http://landingpage.github.io;">
+  <title>Meal Price - Home</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ775iX9fUji1mZm61y4tnP3VoAira3BnkM7" crossorigin="anonymous">
+<style>
+/* Styles for Header */
+#navbar {
+  background-color: white;
+  color: black;
+  padding: 1rem;
+  position: fixed;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 3px 15px rgba(0,0,0,0.1);
+}
+
+#navbar ul {
+  list-style: none;
+}
+
+#navbar li {
+  display: inline;
+  margin-right: 20px;
+  transition: color 0.3s ease-in-out;
+}
+
+#navbar li:hover {
+  color: #007bff;
+}
+
+#navbar li:last-child {
+  margin-right: 0;
+}
+
+/* Styles for Hero Section */
+#hero {
+  text-align: center;
+  padding: 100px 0;
+  background-color: #f9f9f9;
+}
+
+.cover-image {
+  width: 100%;
+  height: auto;
+}
+
+.app-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.app-button:hover {
+  background-color: #0056b3;
+}
+
+/* Styles for Features Section */
+.feature {
+    display: inline-block;
+    width: calc(33.33% - 40px); /* Largeur ajustée pour tenir compte de la marge */
+    margin: 20px;
+    padding: 20px;
+    text-align: center;
+    vertical-align: top;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+
+.feature img {
+    width: 100px;
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 10px; /* Pour rendre les images légèrement arrondies */
+}
+
+
+.feature:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Styles for About Section */
+#about h2, #about h3 {
+    font-size: 24px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#about p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.about-project {
+  background-color: #b2fab4; /* Couleur de fond vert clair */
+  padding: 20px;
+  text-align: center; /* Centrer le texte */
+}
+
+.about-project h2 {
+  color: #333; /* Couleur du texte pour le titre */
+}
+
+.about-project p {
+  color: #555; /* Couleur du texte pour les paragraphes */
+}
+
+/* Animation */
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+#hero, #features, #about {
+  animation: slideInFromLeft 1s ease-out;
+}
+
+</style>
+</head>
+<body>
+  <header id="navbar">
+    <nav>
+      <ul>
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div id="hero">
+    <img class="cover-image" src="static/img-src/ban.png" alt="Description of the cover image">
+    <h1>Meal Price</h1>
+    <p>A complete solution to manage your diet while respecting your budget.</p>
+    <a href="link_to_deployed_project_application" class="app-button">Go to Application</a>
+  </div>
+
+  <section id="features">
+    <h2>Why Choose Meal Price?</h2>
+    <p>Meal Price is not just a recipe app; it's a complete solution for managing your diet while respecting your budget.</p>
+
+    <div class="feature">
+<img src="static/img-src/calendar.png" alt="Calendar">
+      <h2>Meal Planning</h2>
+      <p>Use our interactive calendar to plan your weekly meals with just a few clicks! You can even sync the calendar with your smartphone for reminders.</p>
+    </div>
+
+    <div class="feature">
+      <img src="static/img-src/cout.jpeg" alt="Cost Management">
+      <h2>Cost Management</h2>
+      <p>On a tight budget? No problem! Our smart calculator will help you select delicious recipes without breaking the bank. Monitor your spending and savings in real-time.</p>
+    </div>
+
+    <div class="feature">
+      <img src="static/img-src/ust.png" alt="Recipe Display">
+      <h2>Recipe Display</h2>
+      <p>Our user-friendly interface lets you easily browse thousands of recipes, filter them based on various criteria, and directly add them to your calendar or shopping list.</p>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="about-project p-3 text-center" style="font-size: 14px; font-family: 'Comic Sans MS', 'Cheeseburger', sans-serif;">
+      <h2>About the Project</h2>
+
+      <p>
+        Nowadays, the purchasing power of individuals is increasingly threatened by economic fluctuations and rampant inflation. Each person or family feels the pressing need to monitor their expenses and understand where every penny is spent.
+      </p>
+
+      <p>
+        In this context, a recurring question often arises before each outing or meal: "How much will I spend on this family meal?" or "Will this exceed my monthly budget?". As trivial as these questions might seem, they represent the reality of many households.
+      </p>
+
+      <p>
+        Faced with this reality, the idea for this project was born. We wanted to offer each user a reliable and practical tool, enabling them to estimate their expenses and manage their budget better. We firmly believe that technology, when used wisely, can provide solutions to concrete problems and positively impact our daily lives.
+      </p>
+
+      <p>
+        Although this project was designed as part of my curriculum at Holberton School, it goes beyond a mere academic framework. It's the result of our passion for development and our desire to provide a concrete solution to a societal problem. For more information about Holberton School, please visit <a href="https://www.holbertonschool.com/" target="_blank">their website</a>.
+      </p>
+
+      <h3>Team Members</h3>
+      <ul>
+        <li>
+          <h2 class="col-lg-15">DOUIOU SAMIRA </h2>
+          <div class="display-4 lh-2 mb-4">
+            <div class="social-links">
+              <li>
+                <a href="https://www.linkedin.com/in/kevinrogeret/">
+                  <img src="static/img-src/lin.png" alt="LinkedIn Membre 1" width="80" height="80">
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/Air-KS">
+                  <img src="static/img-src/github.png" alt="GitHub Membre 1" width="80" height="80">
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/Nono61654482">
+                  <img src="static/img-src/X.png" alt="Twitter Membre 1" width="80" height="80">
+                </a>
+              </li>
+            </div>
+          </div>
+        </li>
+        <!-- Repeat the same format for other team members -->
+      </ul>
+
+      <h3>Project's Github Repository</h3>
+      <p>
+        For those interested in the technical aspects of the project or wishing to contribute, feel free to visit our <a href="https://github.com/ananas122/landingpage" target="_blank">Github repository</a>. We always welcome feedback.
+      </p>
+    </div>
+  </section>
+
+  <script>
+  (function () {
+  //===== Preloader
+  const preloader = document.querySelector(".preloader");
+  if (preloader) {
+    window.onload = function () {
+      window.setTimeout(function () {
+        preloader.style.opacity = "0";
+        preloader.style.display = "none";
+      }, 500);
+    };
+  }
+
+  /*=====================================
+    Sticky
+  ======================================= */
+  const header_navbar = document.querySelector("#navbar"); // changé .navbar-area en #navbar
+  if (header_navbar) {
+    window.onscroll = function () {
+      const sticky = header_navbar.offsetTop;
+
+      if (window.pageYOffset > sticky) {
+        header_navbar.classList.add("sticky");
+      } else {
+        header_navbar.classList.remove("sticky");
+      }
+    };
+  }
+
+  //===== Scroll Top
+  const backToTo = document.querySelector(".scroll-top");
+  if (backToTo) {
+    window.onscroll = function () {
+      if (
+        document.body.scrollTop > 50 ||
+        document.documentElement.scrollTop > 50
+      ) {
+        backToTo.style.display = "flex";
+      } else {
+        backToTo.style.display = "none";
+      }
+    };
+  }
+
+  //===== Menu Scroll
+  const pageLink = document.querySelectorAll(".page-scroll");
+  if (pageLink.length > 0) {
+    pageLink.forEach((elem) => {
+      elem.addEventListener("click", (e) => {
+        e.preventDefault();
+        const targetPosition = document.querySelector(
+          elem.getAttribute("href")
+        ).offsetTop;
+        window.scroll({
+          top: targetPosition,
+          left: 0,
+          behavior: "smooth",
+        });
+      });
+    });
+  }
+
+  //===== Navbar Toggler
+  let navbarToggler = document.querySelector(".navbar-toggler");
+  const navbarCollapse = document.querySelector(".navbar-collapse");
+
+  if (navbarToggler && navbarCollapse) {
+    navbarToggler.addEventListener("click", function () {
+      navbarToggler.classList.toggle("active");
+      navbarCollapse.classList.toggle("show");
+    });
+  }
+
+  //===== WOW Plugin
+  if (typeof WOW !== "undefined") {
+    new WOW().init();
+  }
+})();
+
+// Attente que le document soit prêt
+document.addEventListener('DOMContentLoaded', function() {
+  // Sélection de tous les éléments avec la classe "feature"
+  const features = document.querySelectorAll('.feature');
+
+  // Parcourir chaque élément et ajouter une classe pour le fade-in
+  features.forEach((feature, index) => {
+    setTimeout(() => {
+      feature.classList.add('fade-in');
+    }, index * 300); // Délai entre chaque animation
+  });
+});
+
+  </script>
+</body>
+</html>
